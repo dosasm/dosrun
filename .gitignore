@@ -1,5 +1,9 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# files copied from node_module
+public/emulators
+public/emulators-ui
+
 # dependencies
 /node_modules
 /.pnp

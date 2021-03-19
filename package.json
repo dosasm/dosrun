@@ -10,6 +10,8 @@
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "emulators": "^0.0.59",
+    "emulators-ui": "^0.0.56",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.3",
@@ -17,6 +19,7 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
+    "copy-emu":"cp -r node_modules/emulators/dist public/emulators && cp -r node_modules/emulators-ui/dist public/emulators-ui",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

@@ -4302,6 +4302,16 @@ emojis-list@^3.0.0:
   resolved "https://registry.npm.taobao.org/emojis-list/download/emojis-list-3.0.0.tgz#5570662046ad29e2e916e71aae260abdff4f6a78"
   integrity sha1-VXBmIEatKeLpFucariYKvf9Pang=
 
+emulators-ui@^0.0.56:
+  version "0.0.56"
+  resolved "https://registry.npm.taobao.org/emulators-ui/download/emulators-ui-0.0.56.tgz#cfcb55aeac0eaec2e5ab86094034d834fb685fba"
+  integrity sha1-z8tVrqwOrsLlq4YJQDTYNPtoX7o=
+
+emulators@^0.0.59:
+  version "0.0.59"
+  resolved "https://registry.npm.taobao.org/emulators/download/emulators-0.0.59.tgz#e3cb2981a74423e5d6f23724f01bb73c8da2f40d"
+  integrity sha1-48spgadEI+XW8jck8Bu3PI2i9A0=
+
 encodeurl@~1.0.2:
   version "1.0.2"
   resolved "https://registry.npm.taobao.org/encodeurl/download/encodeurl-1.0.2.tgz#ad3ff4c86ec2d029322f5a02c3a9a606c95b3f59"

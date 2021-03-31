@@ -1,0 +1,12 @@
+
+ Start  Stop   Length Name               Class
+
+ 00000H 00028H 00029H _TEXT              CODE
+ 0002AH 00043H 0001AH _DATA              DATA
+ 00044H 00044H 00000H _BSS               BSS
+
+Undefined symbol '_GETCH' in module A.C
+Undefined symbol '_INITGRAPH' in module A.C
+Program entry point at 0000:0000
+Warning: no stack
+

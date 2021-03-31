@@ -3,7 +3,8 @@
 # files copied from node_module
 public/emulators
 public/emulators-ui
-
+# jsdos bundle
+public/*.jsdos
 # dependencies
 /node_modules
 /.pnp

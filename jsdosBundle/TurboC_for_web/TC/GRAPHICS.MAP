@@ -1,0 +1,17 @@
+
+ Start  Stop   Length Name               Class
+
+ 00000H 0094DH 0094EH _DATA              DATA
+ 0094EH 0094EH 00000H GRAPH              DATA
+ 0094EH 00951H 00004H _EMUSEG            DATA
+ 00952H 00953H 00002H _CVTSEG            DATA
+ 00954H 00959H 00006H _SCNSEG            DATA
+ 0095AH 0095BH 00002H _CRTSEG            DATA
+ 0095CH 060A5H 0574AH _TEXT              CODE
+ 060A6H 060E7H 00042H _BSS               BSS
+ 060E8H 060E8H 00000H _BSSEND            STACK
+ 060F0H 0616FH 00080H _STACK             STACK
+
+Undefined symbol '__HEAPLEN' in module C0S
+Program entry point at 0095:5533
+

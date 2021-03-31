@@ -1,0 +1,21 @@
+
+ Start  Stop   Length Name               Class
+
+ 00000H 001F9H 001FAH _TEXT              CODE
+ 00200H 00393H 00194H _DATA              DATA
+ 00394H 00397H 00004H _EMUSEG            DATA
+ 00398H 00399H 00002H _CRTSEG            DATA
+ 0039AH 0039AH 00000H _CVTSEG            DATA
+ 0039AH 0039AH 00000H _SCNSEG            DATA
+ 0039AH 0039AH 00000H _BSS               BSS
+ 0039AH 0039AH 00000H _BSSEND            STACK
+ 003A0H 0041FH 00080H _STACK             STACK
+
+Undefined symbol '__STKLEN' in module C0S
+Undefined symbol '__HEAPLEN' in module C0S
+Undefined symbol '__SETARGV' in module C0S
+Undefined symbol '__SETENVP' in module C0S
+Undefined symbol '_MAIN' in module C0S
+Undefined symbol '_EXIT' in module C0S
+Program entry point at 0000:0000
+

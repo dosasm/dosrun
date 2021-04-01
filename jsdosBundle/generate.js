@@ -1,12 +1,12 @@
 // require modules
 const fs = require('fs');
 const archiver = require('archiver');
-const path=require('path');
+const path = require('path');
 
 function zipFolder(dir) {
     // create a file to stream archive data to.
-    const dst=path.resolve(__dirname,`../public/${dir}.jsdos`);
-    const src=path.resolve(__dirname,`./${dir}/`);
+    const dst = path.resolve(__dirname, `../public/${dir}.jsdos`);
+    const src = path.resolve(__dirname, `./${dir}/`);
     const output = fs.createWriteStream(dst);
     const archive = archiver('zip');
 
@@ -46,17 +46,20 @@ function zipFolder(dir) {
     // append files from a sub-directory, putting its contents at the root of archive
     archive.directory(src, false);
 
+    // append a file from string
+    archive.file(__dirname+'/code.bat', { name: 'tools/code.bat' });
+
     // finalize the archive (ie we are done appending files but streams have to finish yet)
     // 'close', 'end' or 'finish' may be fired right after calling this method so register to them beforehand
     archive.finalize();
 }
 
-const dirs=fs.readdirSync(__dirname);
+const dirs = fs.readdirSync(__dirname);
 console.log(dirs);
-for(const dir of dirs){
-    const folder=path.resolve(__dirname,dir)
-    const s=fs.statSync(folder);
-    if(s.isDirectory()){
+for (const dir of dirs) {
+    const folder = path.resolve(__dirname, dir)
+    const s = fs.statSync(folder);
+    if (s.isDirectory()) {
         zipFolder(dir)
     }
 }

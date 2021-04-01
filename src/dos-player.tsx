@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import * as jsdos from "emulators";
 import { DosFactoryType, DosInstance } from "emulators-ui/dist/types/js-dos";
+import CreatableSelect from 'react-select/creatable';
 
 declare const Dos: DosFactoryType;
 
@@ -45,35 +46,45 @@ export default function DosPlayer(props: PlayerProps) {
 }
 
 export class JSDos extends React.Component {
-  state: { bundleUrl: string; exit: boolean };
+  state: {
+    bundleUrl: {
+      value: string;
+      label: string;
+    };
+    exit: boolean;
+  };
   constructor(props: any) {
     super(props);
     this.state = {
-      bundleUrl: "MASM_for_web.jsdos",
+      bundleUrl: this.bundleUrls[0],
       exit: false,
     };
   }
+  bundleUrls = [
+    { value: "MASM_for_web.jsdos", label: "MASM" },
+    { value: "TASM_for_web.jsdos", label: "TASM" },
+    { value: "TurboC_for_web.jsdos", label: "turbo C" },
+  ];
   renderSelect() {
     let { bundleUrl } = this.state;
+
     return (
       <div>
-        <select
-          defaultValue={bundleUrl}
-          onChange={this.handleSelectChange.bind(this)}
-        >
-          <option value="MASM_for_web.jsdos">MASM</option>
-          <option value="TASM_for_web.jsdos">TASM</option>
-          <option value="TurboC_for_web.jsdos">Turbo C</option>
-          <option value="custom">custom</option>
-        </select>
+         <CreatableSelect
+        isClearable
+        onChange={this.handleSelectChange.bind(this)}
+        value={bundleUrl}
+        options={this.bundleUrls}
+      />
       </div>
     );
   }
-  handleSelectChange(e: any) {
-    let val = e.target.value as string;
-    this.setState({
-      bundleUrl: val,
-    });
+  handleSelectChange(val: any) {
+    if(val){
+      this.setState({
+        bundleUrl: val,
+      });
+    }
   }
   getCi(ci: jsdos.CommandInterface) {
     //this.ci=ci;
@@ -96,7 +107,7 @@ export class JSDos extends React.Component {
     console.log(text);
   }
   render() {
-    let bundle = this.state.bundleUrl;
+    let bundle = this.state.bundleUrl.value;
     if (!bundle.startsWith("http")) {
       bundle = document.location.pathname + "/" + bundle;
     }

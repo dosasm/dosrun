@@ -47,7 +47,7 @@ function zipFolder(dir) {
     archive.directory(src, false);
 
     // append a file from string
-    archive.file(__dirname+'/code.bat', { name: 'tools/code.bat' });
+    //archive.file(__dirname+'/code.bat', { name: 'tools/code.bat' });
 
     // finalize the archive (ie we are done appending files but streams have to finish yet)
     // 'close', 'end' or 'finish' may be fired right after calling this method so register to them beforehand

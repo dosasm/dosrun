@@ -23,7 +23,7 @@ class App extends React.Component {
       <div>
         <div
           className="Dosbox"
-          style={{ float: "left", width: "640px", height: "400px" }}
+          style={{ float: "left", width: "50%" }}
         >
           {this.renderDosPlayer()}
         </div>

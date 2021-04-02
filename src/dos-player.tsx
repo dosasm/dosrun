@@ -42,7 +42,7 @@ export default function DosPlayer(props: PlayerProps) {
     }
   }, [dos, props, props.bundleUrl]);
 
-  return <div ref={rootRef} style={{ width: "100%", height: "100%" }}></div>;
+  return <div ref={rootRef} style={{ width: "100%", height: "100%" }} tabIndex={0} ></div>;
 }
 
 interface JSDosProps {
@@ -51,6 +51,7 @@ interface JSDosProps {
 }
 
 export function  JSDos (props:JSDosProps) {
+
   const bundleUrls = [
     { value: "MASM_for_web.jsdos", label: "MASM" },
     { value: "TASM_for_web.jsdos", label: "TASM" },

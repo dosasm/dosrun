@@ -45,6 +45,10 @@ export default function DosPlayer(props: PlayerProps) {
   return <div ref={rootRef} style={{ width: "100%", height: "100%" }}></div>;
 }
 
+interface JSDosProps {
+  onEdit?(path: string, body: string): any;
+}
+
 export class JSDos extends React.Component {
   state: {
     bundleUrl: {
@@ -53,7 +57,7 @@ export class JSDos extends React.Component {
     };
     exit: boolean;
   };
-  constructor(props: any) {
+  constructor(props: JSDosProps) {
     super(props);
     this.state = {
       bundleUrl: this.bundleUrls[0],
@@ -65,6 +69,9 @@ export class JSDos extends React.Component {
     { value: "TASM_for_web.jsdos", label: "TASM" },
     { value: "TurboC_for_web.jsdos", label: "turbo C" },
   ];
+  onEdit(){
+
+  }
   renderSelect() {
     let { bundleUrl } = this.state;
 
@@ -92,6 +99,10 @@ export class JSDos extends React.Component {
     let stdout = "";
     events.onStdout((val) => {
       stdout += val;
+      const re=/EDIT file (.*) at sideEditor/.exec(stdout)
+      if(re?.length===3){
+        console.log(re)
+      }
       setTimeout(() => {
         if (stdout.length > 0) {
           console.log(stdout);
@@ -99,7 +110,8 @@ export class JSDos extends React.Component {
         }
       });
     });
-    //fs not work
+    //fs only works with direct
+    //readfile
     const fs = (ci as any).module.FS as typeof FS;
     (window as any).fs = fs;
     const text = fs.readFile("/home/web_user/README.txt", {

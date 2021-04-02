@@ -45,7 +45,7 @@ function zipFolder(dir) {
 
     // append files from a sub-directory, putting its contents at the root of archive
     archive.directory(src, false);
-   // archive.directory(__dirname+'/tools', '/tools/');
+    // archive.directory(__dirname+'/tools', '/tools/');
 
     // finalize the archive (ie we are done appending files but streams have to finish yet)
     // 'close', 'end' or 'finish' may be fired right after calling this method so register to them beforehand
@@ -55,9 +55,23 @@ function zipFolder(dir) {
 const dirs = fs.readdirSync(__dirname);
 console.log(dirs);
 for (const dir of dirs) {
-    const folder = path.resolve(__dirname, dir)
+    const folder = path.resolve(__dirname, dir);
+    const codeBat = `
+@echo off
+if "%1"=="" goto help
+@echo EDIT file %1 at sideEditor
+:help
+echo edit your file ar the side editor
+echo This is experimental feature
+`
     const s = fs.statSync(folder);
-    if (s.isDirectory() && dir!=='tools') {
-        zipFolder(dir)
+    if (s.isDirectory() && dir !== 'tools') {
+        const tools = folder + '/dosasm/';
+        const codeBatPath = tools + 'code.bat';
+        if(!fs.existsSync(tools)){
+            fs.mkdirSync(tools)
+        }
+        fs.writeFileSync(codeBatPath, codeBat);
+        zipFolder(dir);
     }
 }

@@ -57,7 +57,7 @@ console.log(dirs);
 for (const dir of dirs) {
     const folder = path.resolve(__dirname, dir)
     const s = fs.statSync(folder);
-    if (s.isDirectory()) {
+    if (s.isDirectory() && dir!=='tools') {
         zipFolder(dir)
     }
 }

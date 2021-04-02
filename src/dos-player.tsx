@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import * as jsdos from "emulators";
 import { DosFactoryType, DosInstance } from "emulators-ui/dist/types/js-dos";
-import CreatableSelect from 'react-select/creatable';
+import CreatableSelect from "react-select/creatable";
 
 declare const Dos: DosFactoryType;
 
@@ -70,17 +70,17 @@ export class JSDos extends React.Component {
 
     return (
       <div>
-         <CreatableSelect
-        isClearable
-        onChange={this.handleSelectChange.bind(this)}
-        value={bundleUrl}
-        options={this.bundleUrls}
-      />
+        <CreatableSelect
+          isClearable
+          onChange={this.handleSelectChange.bind(this)}
+          value={bundleUrl}
+          options={this.bundleUrls}
+        />
       </div>
     );
   }
   handleSelectChange(val: any) {
-    if(val){
+    if (val) {
       this.setState({
         bundleUrl: val,
       });
@@ -100,7 +100,8 @@ export class JSDos extends React.Component {
       });
     });
     //fs not work
-    const fs = (ci as any).module.FS;
+    const fs = (ci as any).module.FS as typeof FS;
+    (window as any).fs = fs;
     const text = fs.readFile("/home/web_user/README.txt", {
       encoding: "utf8",
     });

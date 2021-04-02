@@ -13,7 +13,7 @@ class App extends React.Component {
   }
 
   renderDosPlayer() {
-    return <JSDos />;
+    return <JSDos onGetfs={fs=>{(window as any).fs=fs}}/>;
   }
   renderEditor() {
     return <EditPanel/>;

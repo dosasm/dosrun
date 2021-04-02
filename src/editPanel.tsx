@@ -1,7 +1,11 @@
 import React from "react";
 import Editor from "react-simple-code-editor";
 
-export function EditPanel() {
+interface editorProps{
+  fs?:typeof FS
+}
+
+export function EditPanel(props:editorProps) {
   const helloworld=`; a simple hello  word sample
   .386
  DATA SEGMENT USE16

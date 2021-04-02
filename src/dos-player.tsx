@@ -47,61 +47,39 @@ export default function DosPlayer(props: PlayerProps) {
 
 interface JSDosProps {
   onEdit?(path: string, body: string): any;
+  onGetfs?(fs: typeof FS): any;
 }
 
-export class JSDos extends React.Component {
-  state: {
-    bundleUrl: {
-      value: string;
-      label: string;
-    };
-    exit: boolean;
-  };
-  constructor(props: JSDosProps) {
-    super(props);
-    this.state = {
-      bundleUrl: this.bundleUrls[0],
-      exit: false,
-    };
-  }
-  bundleUrls = [
+export function  JSDos (props:JSDosProps) {
+  const bundleUrls = [
     { value: "MASM_for_web.jsdos", label: "MASM" },
     { value: "TASM_for_web.jsdos", label: "TASM" },
     { value: "TurboC_for_web.jsdos", label: "turbo C" },
   ];
-  onEdit(){
-
-  }
-  renderSelect() {
-    let { bundleUrl } = this.state;
-
+  const [bundle,setbundle]=useState<{value:string,label:string}>(bundleUrls[0]);
+  
+  const renderSelect=()=> {
     return (
       <div>
         <CreatableSelect
           isClearable
-          onChange={this.handleSelectChange.bind(this)}
-          value={bundleUrl}
-          options={this.bundleUrls}
+          onChange={val=>val && setbundle(val)}
+          value={bundle}
+          options={bundleUrls}
         />
       </div>
     );
   }
-  handleSelectChange(val: any) {
-    if (val) {
-      this.setState({
-        bundleUrl: val,
-      });
-    }
-  }
-  getCi(ci: jsdos.CommandInterface) {
+  const bundleUrl=bundle.value.startsWith("http")?bundle.value:document.location.pathname + "/" + bundle.value;
+  const getCi=(ci: jsdos.CommandInterface)=> {
     //this.ci=ci;
     const events = ci.events();
     let stdout = "";
     events.onStdout((val) => {
       stdout += val;
-      const re=/EDIT file (.*) at sideEditor/.exec(stdout)
-      if(re?.length===3){
-        console.log(re)
+      const re = /EDIT file (.*) at sideEditor/.exec(stdout);
+      if (re?.length === 2) {
+        console.log(re);
       }
       setTimeout(() => {
         if (stdout.length > 0) {
@@ -113,22 +91,18 @@ export class JSDos extends React.Component {
     //fs only works with direct
     //readfile
     const fs = (ci as any).module.FS as typeof FS;
-    (window as any).fs = fs;
+    if(props.onGetfs){
+      props.onGetfs(fs)
+    }
     const text = fs.readFile("/home/web_user/README.txt", {
       encoding: "utf8",
     });
     console.log(text);
   }
-  render() {
-    let bundle = this.state.bundleUrl.value;
-    if (!bundle.startsWith("http")) {
-      bundle = document.location.pathname + "/" + bundle;
-    }
-    return (
-      <div>
-        {this.renderSelect()}
-        <DosPlayer bundleUrl={bundle} onGetCi={this.getCi.bind(this)} />
-      </div>
-    );
-  }
+  return (
+    <div>
+      {renderSelect()}
+      <DosPlayer bundleUrl={bundleUrl} onGetCi={getCi} />
+    </div>
+  );
 }

@@ -15,7 +15,7 @@ function zipFolder(dir) {
     output.on('close', function () {
         console.log(archive.pointer() + ' total bytes');
         console.log('archiver has been finalized and the output file descriptor has closed.');
-        console.log(`from ${src} tp ${dst}`)
+        console.log(`from ${src} to ${dst}`)
     });
 
     // This event is fired when the data source is drained no matter what was the data source.
@@ -45,9 +45,7 @@ function zipFolder(dir) {
 
     // append files from a sub-directory, putting its contents at the root of archive
     archive.directory(src, false);
-
-    // append a file from string
-    //archive.file(__dirname+'/code.bat', { name: 'tools/code.bat' });
+   // archive.directory(__dirname+'/tools', '/tools/');
 
     // finalize the archive (ie we are done appending files but streams have to finish yet)
     // 'close', 'end' or 'finish' may be fired right after calling this method so register to them beforehand

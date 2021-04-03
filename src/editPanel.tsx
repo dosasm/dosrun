@@ -42,7 +42,6 @@ export function EditPanel(props: editorProps) {
       autoFocus={true}
       //https://github.com/caiiiycuk/js-dos/issues/129
       onFocus={(e: any) => {
-        console.log("focus");
         if (key.up === 0) {
           document.addEventListener("keyup", stop, option);
           key.up++;
@@ -54,7 +53,6 @@ export function EditPanel(props: editorProps) {
         setKey(key)
       }}
       onBlur={(e: any) => {
-        console.log("blur");
         while (key.up > 0) {
           document.removeEventListener("keyup", stop, option);
           key.up--;

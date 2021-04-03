@@ -75,6 +75,9 @@ export function  JSDos (props:JSDosProps) {
   const getCi=(ci: jsdos.CommandInterface)=> {
     //this.ci=ci;
     const events = ci.events();
+    events.onExit(
+      ()=>{alert('exited')}
+    )
     let stdout = "";
     events.onStdout((val) => {
       stdout += val;

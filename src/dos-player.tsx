@@ -1,7 +1,8 @@
-import React, { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import * as jsdos from "emulators";
 import { DosFactoryType, DosInstance } from "emulators-ui/dist/types/js-dos";
-import CreatableSelect from "react-select/creatable";
+import Button from "@material-ui/core/Button";
+import Select from "@material-ui/core/Select";
 
 declare const Dos: DosFactoryType;
 
@@ -42,7 +43,13 @@ export default function DosPlayer(props: PlayerProps) {
     }
   }, [dos, props, props.bundleUrl]);
 
-  return <div ref={rootRef} style={{ width: "100%", height: "100%" }} tabIndex={0} ></div>;
+  return (
+    <div
+      ref={rootRef}
+      style={{ width: "100%", height: "100%" }}
+      tabIndex={0}
+    ></div>
+  );
 }
 
 interface JSDosProps {
@@ -50,34 +57,23 @@ interface JSDosProps {
   onGetfs?(fs: typeof FS): any;
 }
 
-export function  JSDos (props:JSDosProps) {
-
+export function JSDos(props: JSDosProps) {
   const bundleUrls = [
-    { value: "MASM_for_web.jsdos", label: "MASM" },
-    { value: "TASM_for_web.jsdos", label: "TASM" },
-    { value: "TurboC_for_web.jsdos", label: "turbo C" },
+    { value: "MASM_for_web.jsdos", name: "MASM" },
+    { value: "TASM_for_web.jsdos", name: "TASM" },
+    { value: "TurboC_for_web.jsdos", name: "turbo C" },
   ];
-  const [bundle,setbundle]=useState<{value:string,label:string}>(bundleUrls[0]);
-  
-  const renderSelect=()=> {
-    return (
-      <div>
-        <CreatableSelect
-          isClearable
-          onChange={val=>val && setbundle(val)}
-          value={bundle}
-          options={bundleUrls}
-        />
-      </div>
-    );
-  }
-  const bundleUrl=bundle.value.startsWith("http")?bundle.value:document.location.pathname + "/" + bundle.value;
-  const getCi=(ci: jsdos.CommandInterface)=> {
+  const [bundle, setbundle] = useState<string>(bundleUrls[0].value);
+
+  const bundleUrl = bundle.startsWith("http")
+    ? bundle
+    : document.location.pathname + "/" + bundle;
+  const getCi = (ci: jsdos.CommandInterface) => {
     //this.ci=ci;
     const events = ci.events();
-    events.onExit(
-      ()=>{alert('exited')}
-    )
+    events.onExit(() => {
+      console.log("exited");
+    });
     let stdout = "";
     events.onStdout((val) => {
       stdout += val;
@@ -95,17 +91,28 @@ export function  JSDos (props:JSDosProps) {
     //fs only works with direct
     //readfile
     const fs = (ci as any).module.FS as typeof FS;
-    if(props.onGetfs){
-      props.onGetfs(fs)
+    if (props.onGetfs) {
+      props.onGetfs(fs);
     }
     const text = fs.readFile("/home/web_user/README.txt", {
       encoding: "utf8",
     });
     console.log(text);
-  }
+  };
   return (
     <div>
-      {renderSelect()}
+      <Select
+        onChange={(val) =>
+          typeof val.target.value === "string" && setbundle(val.target.value)
+        }
+        value={bundle}
+      >
+        {bundleUrls.map((val) => (
+          <option value={val.value}>{val.name}</option>
+        ))}
+      </Select>
+      <Button>Run</Button>
+      <Button>Debug</Button>
       <DosPlayer bundleUrl={bundleUrl} onGetCi={getCi} />
     </div>
   );

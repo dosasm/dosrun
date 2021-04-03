@@ -54,7 +54,9 @@ export default function DosPlayer(props: PlayerProps) {
 
 interface JSDosProps {
   onEdit?(path: string, body: string): any;
-  onGetfs?(fs: typeof FS): any;
+  runCode?():any;
+  debugCode?():any;
+  onGetCi?(ci: jsdos.CommandInterface): any;
 }
 
 export function JSDos(props: JSDosProps) {
@@ -88,27 +90,23 @@ export function JSDos(props: JSDosProps) {
         }
       });
     });
-    //fs only works with direct
-    //readfile
-    const fs = (ci as any).module.FS as typeof FS;
-    if (props.onGetfs) {
-      props.onGetfs(fs);
+    if (props.onGetCi) {
+      props.onGetCi(ci);
     }
-    const text = fs.readFile("/home/web_user/README.txt", {
-      encoding: "utf8",
-    });
-    console.log(text);
   };
   return (
     <div>
       <Select
+        key="select jsdos bundle"
         onChange={(val) =>
           typeof val.target.value === "string" && setbundle(val.target.value)
         }
         value={bundle}
       >
-        {bundleUrls.map((val) => (
-          <option value={val.value}>{val.name}</option>
+        {bundleUrls.map((val, idx) => (
+          <option value={val.value} key={String(idx)}>
+            {val.name}
+          </option>
         ))}
       </Select>
       <Button>Run</Button>

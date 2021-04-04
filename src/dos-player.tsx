@@ -77,6 +77,32 @@ export default function DosPlayer(props: PlayerProps) {
   return <div ref={rootRef} style={{ width: "100%", height: "100%" }}></div>;
 }
 
+const lan = (navigator as any)?.systemLanguage || navigator.language;
+class I18n{
+  map:Map<string,string>;
+  constructor(){
+    this.map=new Map();
+    this.map.set('zh-CN.RUN','运行')
+    this.map.set('zh-CN.DEBUG','调试')
+    this.map.set('zh-CN.LIST','生成lst文件')
+  }
+  chs(){
+    const map=new Map();
+    
+    return map;
+  }
+  getStr(str:string){
+    
+    let key=lan+'.'+str.toUpperCase().trim()
+    if(this.map.has(key)){
+      const o=this.map.get(key);
+      if(o){return o;}
+    }
+    return str;
+  }
+}
+const i18n=new I18n();
+
 /**render buttons for interaction*/
 function JsdosButtons(props: any) {
   const [ciState, setCiState] = useState<boolean>(false);
@@ -103,7 +129,7 @@ function JsdosButtons(props: any) {
         {cmds.map(
         val=>{
           const strs=val.split('\n');
-          return <Button key={val} style={{float:"right"}}>{strs[0]}</Button>
+          return <Button key={val} style={{float:"right"}}>{i18n.getStr(strs[0])}</Button>
         }
       )}
       </>

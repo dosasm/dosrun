@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import * as jsdos from "emulators";
+import { CommandInterface, CommandInterfaceEvents } from "emulators";
 import { DosFactoryType, DosInstance } from "emulators-ui/dist/types/js-dos";
 import Button from "@material-ui/core/Button";
 import Select from "@material-ui/core/Select";
@@ -7,11 +7,45 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 declare const Dos: DosFactoryType;
 
-interface PlayerProps {
-  bundleUrl: string;
-  onGetCi?(ci: jsdos.CommandInterface): any;
+/**manage the JSDos command interface */
+class JsdosCi {
+  static pathprefix = "/home/web_user/";
+  ci?: CommandInterface;
+  fs?: typeof FS;
+  events?: CommandInterfaceEvents;
+  setCi(ci: CommandInterface) {
+    this.ci = ci;
+    this.fs = (ci as any).module.FS;
+    this.events = ci.events();
+    this.events.onExit(() => {
+      console.log("exited");
+    });
+    let stdout = "";
+    this.events.onStdout((val) => {
+      stdout += val;
+      const re = /EDIT file (.*) at sideEditor/.exec(stdout);
+      if (re?.length === 2) {
+        console.log(re);
+      }
+      setTimeout(() => {
+        if (stdout.length > 0) {
+          console.log(stdout);
+          stdout = "";
+        }
+      });
+    });
+    this.onGetCi();
+  }
+  onGetCi() {}
 }
 
+const jsdosCi = new JsdosCi();
+
+interface PlayerProps {
+  bundleUrl: string;
+}
+
+/**React component for JSDOS [jsdos document](https://js-dos.com/v7/build/docs/react) */
 export default function DosPlayer(props: PlayerProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const [dos, setDos] = useState<DosInstance | null>(null);
@@ -36,26 +70,50 @@ export default function DosPlayer(props: PlayerProps) {
 
   useEffect(() => {
     if (dos !== null) {
-      dos.run(props.bundleUrl).then((ci) => {
-        if (props.onGetCi) {
-          props.onGetCi(ci);
-        }
-      }); // ci is returned
+      dos.run(props.bundleUrl).then((ci) => jsdosCi.setCi(ci)); // ci is returned
     }
   }, [dos, props, props.bundleUrl]);
 
-  return (
-    <div
-      ref={rootRef}
-      style={{ width: "100%", height: "100%" }}
-      tabIndex={0}
-    ></div>
-  );
+  return <div ref={rootRef} style={{ width: "100%", height: "100%" }}></div>;
+}
+
+/**render buttons for interaction*/
+function JsdosButtons(props: any) {
+  const [ciState, setCiState] = useState<boolean>(false);
+  jsdosCi.onGetCi = () => {
+    setCiState(true);
+  };
+
+  if (ciState) {
+    const folderInfo = jsdosCi.fs?.readdir(JsdosCi.pathprefix);
+    if (folderInfo && folderInfo.includes("README.txt")) {
+      const text = jsdosCi.fs?.readFile("/home/web_user/README.txt", {
+        encoding: "utf8",
+      });
+      const r = /```([\s\S]*?)```/g;
+      let re = r.exec(text ? text : "");
+      const cmds=[]
+      while (text && re) {
+        cmds.unshift(re[1]);
+        re = r.exec(text ? text : "");
+        console.log(re);
+      }
+      console.log(text);
+      return <>
+        {cmds.map(
+        val=>{
+          const strs=val.split('\n');
+          return <Button key={val} style={{float:"right"}}>{strs[0]}</Button>
+        }
+      )}
+      </>
+    }
+  }
+  return <></>;
 }
 
 interface JSDosProps {
   getCode: () => string | undefined;
-  onGetCi?(ci: jsdos.CommandInterface): any;
 }
 
 export function JSDos(props: JSDosProps) {
@@ -87,49 +145,11 @@ export function JSDos(props: JSDosProps) {
     </Select>
   );
 
-  //get the control interface
-  let ci:jsdos.CommandInterface|undefined=undefined;
-  const getCi = (_ci: jsdos.CommandInterface) => {
-    ci=_ci;
-    const events = ci.events();
-    events.onExit(() => {
-      console.log("exited");
-    });
-    let stdout = "";
-    events.onStdout((val) => {
-      stdout += val;
-      const re = /EDIT file (.*) at sideEditor/.exec(stdout);
-      if (re?.length === 2) {
-        console.log(re);
-      }
-      setTimeout(() => {
-        if (stdout.length > 0) {
-          console.log(stdout);
-          stdout = "";
-        }
-      });
-    });
-    if (props.onGetCi) {
-      props.onGetCi(ci);
-    }
-  };
-
-  //run and debug the code
-  const onRun = () => {
-    const code = props.getCode();
-    console.log(code);
-  };
-  const onDebug = () => {
-    const code = props.getCode();
-    console.log(code);
-  };
-
   return (
     <div>
       {selectComponent}
-      <Button onClick={onRun}>Run</Button>
-      <Button onClick={onDebug}>Debug</Button>
-      <DosPlayer bundleUrl={bundleUrl} onGetCi={getCi} />
+      <JsdosButtons></JsdosButtons>
+      <DosPlayer bundleUrl={bundleUrl} />
     </div>
   );
 }

@@ -29,6 +29,7 @@
     "prebuild": "yarn copy-emu && node jsdosBundle/generate.js",
     "copy-emu": "cp -r node_modules/emulators/dist public/emulators && cp -r node_modules/emulators-ui/dist public/emulators-ui",
     "start": "react-scripts start",
+    "poststart":"chrome --disable-extensions http://localhost:3000/react-app/",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

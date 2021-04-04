@@ -1,5 +1,4 @@
-import { CommandInterface } from "emulators";
-import React from "react";
+
 import "./App.css";
 
 import { JSDos } from "./dos-player";
@@ -7,19 +6,9 @@ import { EditPanel } from "./editPanel";
 
 interface propsInterface {}
 
-let ci: CommandInterface | undefined = undefined;
-
 function App(props: propsInterface) {
+  //change the style according to screen size
   const { height, width } = window.screen;
-  //const [ci, setCi] = useState<CommandInterface | undefined>(undefined);
-  const fs = ci ? ((ci as any).module.fs as typeof FS) : undefined;
-  if (fs) {
-    const text = fs.readFile("/home/web_user/README.txt", {
-      encoding: "utf8",
-    });
-    console.log(text);
-  }
-
   const styles =
     height > width
       ? [{ width: "100%" }, { width: "100%" }]
@@ -27,17 +16,22 @@ function App(props: propsInterface) {
           { float: "left", width: "50%" },
           { float: "right", width: "50%", height: "100%" },
         ];
+
+  let code: string | undefined = undefined;
+
   return (
     <div>
       <div className="Dosbox" style={styles[0]}>
         <JSDos
-          onGetCi={(val) => {
-            ci = val;
-          }}
+          getCode={() => code}
         />
       </div>
       <div style={styles[1]}>
-        <EditPanel />
+        <EditPanel
+          onValueChange={(val) => {
+            code = val;
+          }}
+        />
       </div>
     </div>
   );

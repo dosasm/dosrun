@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Editor from "react-simple-code-editor";
 
 interface editorProps {
-  fs?: typeof FS;
+  onValueChange?(val: string): any;
 }
 
 /**stop the dosbox from receiving keyevent
@@ -13,6 +13,12 @@ const stop = function (event: any) {
 };
 
 export function EditPanel(props: editorProps) {
+  const [key, setKey] = useState<{ up: number; down: number }>({
+    up: 0,
+    down: 0,
+  });
+
+  //set Editer value and get the current value
   const helloworld = `; a simple hello  word sample
   .386
   DATA SEGMENT USE16
@@ -32,11 +38,12 @@ export function EditPanel(props: editorProps) {
   CODE ENDS
   END  BEG
   `;
-  
   const [code, setCode] = React.useState(helloworld);
-  const [key,setKey]=useState<{up:number,down:number}>({up:0,down:0});
-  
-  const option=true
+  if (props.onValueChange) {
+    props.onValueChange(code);
+  }
+
+  const option = true;
   return (
     <Editor
       autoFocus={true}
@@ -50,7 +57,7 @@ export function EditPanel(props: editorProps) {
           document.addEventListener("keydown", stop, option);
           key.down++;
         }
-        setKey(key)
+        setKey(key);
       }}
       onBlur={(e: any) => {
         while (key.up > 0) {
@@ -61,11 +68,14 @@ export function EditPanel(props: editorProps) {
           document.removeEventListener("keydown", stop, option);
           key.down--;
         }
-        setKey(key)
+        setKey(key);
       }}
       value={code}
       onValueChange={(code) => {
         setCode(code);
+        if (props.onValueChange) {
+          props.onValueChange(code);
+        }
       }}
       highlight={(code) => code}
       padding={10}

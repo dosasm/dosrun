@@ -1,5 +1,8 @@
-; a simple hello  word sample
- .386
+; a simple hello masm sample
+;RUN-cmd: run ${filename}
+;EXPECT-stdout: "hello masm"
+
+.386
 DATA SEGMENT USE16
 	MESG DB 'hello masm',0AH,'$'
 DATA ENDS

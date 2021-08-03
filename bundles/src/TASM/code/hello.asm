@@ -1,4 +1,6 @@
-; a simple hello  word sample
+; a simple hello tasm sample
+;RUN-cmd: run ${filename}
+;EXPECT-stdout: "hello tasm"
  .386
 DATA SEGMENT USE16
 	MESG DB 'hello tasm',0AH,'$'

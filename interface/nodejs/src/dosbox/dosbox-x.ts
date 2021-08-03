@@ -1,8 +1,33 @@
 import { DOSBox_core } from "./dosbox_core";
 import * as api from '../api';
+import { logger } from "../util";
+
+export interface dosboxXLaunchOptions extends api.commonLaunchOption {
+    /**mount the file from the local fs to the emulator's fs */
+    mount?: { from: string, to: string }[];
+    /**the commands to run in the emulator after launching */
+    run?: string[];
+}
 
 export class DOSBox_x extends DOSBox_core implements api.DosEmu {
     type = api.DOSBEMUTYPE.dosbox_x;
+
+    launch(option: dosboxXLaunchOptions) {
+        const mount = Array.isArray(option.mount) ? option.mount.map(val => {
+            if (val.to.length > 1) {
+                logger.warn(val.to, 'is not allowed');
+                logger.warn('for dosbox-like emulators, we can only mount to disk named with charactors from a-z');
+                return undefined;
+            }
+            return (
+                {
+                    disk: val.to,
+                    path: val.from
+                })
+        }).filter(val => val) : []
+        return this.runCommand(mount, option.run);
+    }
+
     versionReg: RegExp = /DOSBox-X version (.*?),/g;
     /**get the version of the dosbox
      * @return the version part of the output
@@ -25,9 +50,9 @@ export class DOSBox_x extends DOSBox_core implements api.DosEmu {
                 setTimeout(() => { x('Time out') }, 3000)
             }
         )
-
     }
-    static fromDir(opt: { name?: string, path?: string, darwinApp?: boolean }) {
+
+    static create(opt: { name?: string, path?: string, darwinApp?: boolean }) {
         const name = opt.name ? opt.name : 'dosbox-x';
         const path = opt.path;
         //command for open dosbox
@@ -47,8 +72,8 @@ export class DOSBox_x extends DOSBox_core implements api.DosEmu {
     }
     static async auto(name: string = 'dosbox-x'): Promise<DOSBox_x[]> {
         const list = [
-            DOSBox_x.fromDir({ name }),
-            DOSBox_x.fromDir({ name, darwinApp: true })
+            DOSBox_x.create({ name }),
+            DOSBox_x.create({ name, darwinApp: true })
         ];
 
 

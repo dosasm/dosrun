@@ -23,6 +23,14 @@ export enum DOSBEMUTYPE {
     jsdos = 'js-dos'
 }
 
+/**options supported by all emulators */
+export interface commonLaunchOption {
+    /**mount the file from the local fs to the emulator's fs */
+    mount?: { from: string, to: string }[];
+    /**the commands to run in the emulator after launching */
+    run?: string[];
+}
+
 export type launchOptions = dosboxLaunchOptions | jsdosOption
 
 export abstract class DosEmu {
@@ -40,6 +48,10 @@ export abstract class DosEmu {
     abstract version(): string | Promise<string> | any;
     /**launch the emulator*/
     abstract launch(option: launchOptions): any;
+
+    /**create Dosbox according to given path and more args*/
+    static create(path: string, ...args: any[]): DosEmu | Promise<DosEmu> | undefined { return undefined }
+    /**automatically scan the system and create possible DOSBOx */
     static auto(): DosEmu[] | Promise<DosEmu[]> { return [] };
 }
 
@@ -48,9 +60,9 @@ export function getDosbox(type: DOSBEMUTYPE, path?: string, darwinApp?: boolean)
         case DOSBEMUTYPE.jsdos:
             return new Jsdos(path);
         case DOSBEMUTYPE.dosbox:
-            return DOSBox.fromDir({ path, darwinApp });
+            return DOSBox.create({ path, darwinApp });
         case DOSBEMUTYPE.dosbox_x:
-            return DOSBox_x.fromDir({ path, darwinApp });
+            return DOSBox_x.create({ path, darwinApp });
     }
 }
 

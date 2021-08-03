@@ -4,8 +4,31 @@ import { logger } from "../util";
 import { DOSBox_core, WINCONSOLEOPTION } from "./dosbox_core";
 import path = require("path");
 
+export interface dosboxLaunchOptions extends api.commonLaunchOption {
+    /**mount the file from the local fs to the emulator's fs */
+    mount?: { from: string, to: string }[];
+    /**the commands to run in the emulator after launching */
+    run?: string[];
+}
+
 export class DOSBox extends DOSBox_core implements api.DosEmu {
     type = api.DOSBEMUTYPE.dosbox;
+
+    launch(option: dosboxLaunchOptions) {
+        const mount = Array.isArray(option.mount) ? option.mount.map(val => {
+            if (val.to.length > 1) {
+                logger.warn(val.to, 'is not allowed');
+                logger.warn('for dosbox-like emulators, we can only mount to disk named with charactors from a-z');
+                return undefined;
+            }
+            return (
+                {
+                    disk: val.to,
+                    path: val.from
+                })
+        }).filter(val => val) : []
+        return this.runCommand(mount, option.run);
+    }
 
     public versionReg: RegExp = /DOSBox version (.*?),/
     /**get the version of the dosbox
@@ -19,7 +42,7 @@ export class DOSBox extends DOSBox_core implements api.DosEmu {
         };
         return info.exitCode;
     }
-    static fromDir(opt: { name?: string, path?: string, console?: WINCONSOLEOPTION, darwinApp?: boolean }) {
+    static create(opt: { name?: string, path?: string, console?: WINCONSOLEOPTION, darwinApp?: boolean }) {
         const name = opt.name ? opt.name : 'dosbox';
         const path = opt.path;
         const console = opt.console;
@@ -52,7 +75,7 @@ export class DOSBox extends DOSBox_core implements api.DosEmu {
     }
 
     static async auto(name: string = 'dosbox', conn?: WINCONSOLEOPTION): Promise<DOSBox[]> {
-        let list = [DOSBox.fromDir({ name }),];
+        let list = [DOSBox.create({ name }),];
         switch (process.platform) {
             case 'win32':
                 const possibleFolders = [
@@ -66,7 +89,7 @@ export class DOSBox extends DOSBox_core implements api.DosEmu {
                         const subs = fs.readdirSync(d);
                         const sub = subs.find(val => val.toLowerCase().includes('dosbox'));
                         if (sub) {
-                            const db = DOSBox.fromDir({ name });
+                            const db = DOSBox.create({ name });
                             db.cwd = path.resolve(d, sub);
                             list.push(db);
                         }
@@ -75,7 +98,7 @@ export class DOSBox extends DOSBox_core implements api.DosEmu {
 
                 break;
             case 'darwin':
-                list.push(DOSBox.fromDir({ name, darwinApp: true }))
+                list.push(DOSBox.create({ name, darwinApp: true }))
                 break
         }
 

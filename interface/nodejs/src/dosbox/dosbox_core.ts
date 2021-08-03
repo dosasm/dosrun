@@ -179,21 +179,5 @@ export class DOSBox_core {
 
         return this.run(param);
     }
-
-    launch(option: dosboxLaunchOptions) {
-        const mount = Array.isArray(option.mount) ? option.mount.map(val => {
-            if (val.to.length > 1) {
-                logger.warn(val.to, 'is not allowed');
-                logger.warn('for dosbox-like emulators, we can only mount to disk named with charactors from a-z');
-                return undefined;
-            }
-            return (
-                {
-                    disk: val.to,
-                    path: val.from
-                })
-        }).filter(val => val) : []
-        return this.runCommand(mount, option.run);
-    }
 }
 

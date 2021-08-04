@@ -23,16 +23,52 @@ export enum DOSBEMUTYPE {
     jsdos = 'js-dos'
 }
 
-/**options supported by all emulators */
+/**Common Launch options supported by all emulators
+ * 
+*/
 export interface commonLaunchOption {
-    /**mount the file from the local fs to the emulator's fs */
+
+    /**mount the files from the local filesystem to the emulator's filesystem
+     * 
+     * for example: `{from:'C:\dosbox\test',to:'d'}`
+     * 
+     * - this is equivalent to run command `mount d C:\dosbox\test` in dosbox and dosbox-x
+     * - for jsdos, a new jsdos bunle with following structure will be generated, 
+     * and the `/mnt/c` will be mounted to disk c
+     *    - $prefix
+     *        - /.jsdos
+     *        - /mnt/c
+     *        - ......
+     */
     mount?: { from: string, to: string }[];
-    /**the commands to run in the emulator after launching */
-    run?: string[];
+
+    /**the commands to run in the emulator after launching
+     * This is usually a part of dosbox conf. 
+     * If set this, the `AUTOEXEC` section in `confStr` will be **ignored**
+    */
+    autoexec?: string[];
+
+    /**The parameters when opening DOSBox
+     * will be ignored when using jsdos
+     */
+    parameters?: string;
+
+    /** The dosbox configurations file
+     * For simplicity, the `AUTOEXEC` section will be ignored is set autoexec
+     * pass the **CONTENT** of your configuration here
+     *
+     * - for **js-dos** and **dosbox**, see https://www.dosbox.com/wiki/Dosbox.conf
+     * - for **dosbox-x**, see https://github.com/joncampbell123/dosbox-x/blob/master/dosbox-x.reference.full.conf and https://dosbox-x.com/wiki/
+     */
+    confStr?: string | { [id: string]: { [id: string]: any } };
 }
 
 export type launchOptions = dosboxLaunchOptions | jsdosOption
 
+/**The abstract class for dos emulators
+ * - the main part is the static method `create` and `Launch`,
+ * - more methods and options are exposed for the huge differences between emulators
+ */
 export abstract class DosEmu {
     /**The type of the emulator */
     public readonly type: DOSBEMUTYPE;
@@ -47,7 +83,7 @@ export abstract class DosEmu {
     /** check the version of the emulator */
     abstract version(): string | Promise<string> | any;
     /**launch the emulator*/
-    abstract launch(option: launchOptions): any;
+    abstract launch(option: commonLaunchOption): any;
 
     /**create Dosbox according to given path and more args*/
     static create(path: string, ...args: any[]): DosEmu | Promise<DosEmu> | undefined { return undefined }

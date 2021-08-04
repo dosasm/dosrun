@@ -1,9 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import * as os from 'os';
 import { BoxConf } from './dosbox_conf';
 import * as execa from 'execa';
-import { logger } from '../util';
+import { logger, getTmpDir } from '../util';
 
 /**defines the option to do with dosbox's console message **in windows system**.
  * - For **windows**, if with parameter **noconsole** ,
@@ -167,10 +166,8 @@ export class DOSBox_core {
         }
 
         //write config to a temporary file
-        const tmpdir = path.join(os.tmpdir(), 'vscode-xsro-masm-tasm');
-        if (!fs.existsSync(tmpdir)) {
-            fs.mkdirSync(tmpdir)
-        }
+
+        const tmpdir = getTmpDir('dosbox-conf-file');
         const _configPath = path.join(tmpdir, new Date().getTime().toString() + '.conf');
         const data = BoxConf.stringfy(config);
         fs.writeFileSync(_configPath, data);

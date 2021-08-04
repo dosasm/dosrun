@@ -20,7 +20,7 @@ module.exports = function (_argv: string[]): void {
         .option('-F,--use-darwin-app', "use darwin App in Applicatins for macOs")
 
         //launch options
-        .option('-r,--run [cmds...]', 'the commands to run inside dosbox')
+        .option('-r,--autoexec [cmds...]', 'the commands to run inside dosbox')
         .option('-m,--mount [pairs...]', '`pairs` is strings between A and B seperated like `A:B`,`c:./`,`d:C:\\dos`. For jsdos: watch files in local filesytem A and apply changes to B in jsdos.For DOSBox: mount B to A, A should be a-z')
         .option("-b,--bundle [bundle]", "The jsdos bundle to run inside jsdos")
         .option("-a,--disable-stdout", "disable redirect jsdos stdout to process")
@@ -31,6 +31,19 @@ module.exports = function (_argv: string[]): void {
             const folder = PathValidfy(opt.folder);
             const db = api.getDosbox(emu, folder, opt.useDarwinApp);
             const options = opt;
+            if (opt.mount) {
+                opt.mount = opt.mount.map(
+                    (val: string) => {
+                        const idx = val.indexOf(':');
+                        const to = val.substring(0, idx);
+                        const from = val.substring(idx + 1);
+                        console.log(from, to)
+                        return {
+                            from: PathValidfy(from), to
+                        }
+                    }
+                )
+            }
 
             if (emu === api.DOSBEMUTYPE.jsdos) {
                 options.server = opt.port ? { port: opt.port } : undefined;

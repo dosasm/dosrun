@@ -4,15 +4,18 @@ import { startServer } from "./server";
 import { join } from 'path';
 import * as emu from 'emulators';
 import { BoxInMessage } from "./message";
-import { logger, projectFolder } from "../util";
-import { DOSBEMUTYPE, DosEmu } from "../api";
+import { logger, projectFolder, getTmpDir } from "../util";
+import { commonLaunchOption, DOSBEMUTYPE, DosEmu } from "../api";
+import path = require("path");
+import { BoxConf } from "../dosbox/dosbox_conf";
+import { createBundle } from "./bundles";
 
-export interface jsdosOption {
+export interface jsdosOption extends commonLaunchOption {
     /**The jsdos bundle to run*/
-    bundle: string,
+    bundle?: string,
     disableStdin?: boolean,
     disableStdout?: boolean,
-    run?: string[],
+    autoexec?: string[],
 
     server?: {
         port: number,
@@ -48,9 +51,32 @@ export class Jsdos implements DosEmu {
         return undefined
     }
     async launch(opt: jsdosOption) {
-        logger.log(opt)
+        logger.log(opt);
+        let bundlePath = opt.bundle;
+        let copys = [];
+        let conf = new BoxConf();
+
+        if (typeof opt.confStr === 'string') {
+            conf = BoxConf.parse(opt.confStr);
+        } else {
+            conf = new BoxConf(opt.confStr);
+        }
+        if (opt.autoexec) {
+            conf.autoexec = opt.autoexec;
+        }
+
+        if (opt.mount) {
+            copys = opt.mount.map(val => {
+                return { from: val.from, to: 'mnt/' + val.to };
+            });
+            const mountCmd = opt.mount.map(val => `mount ${val.to} ./mnt/${val.to}`);
+            conf.autoexec.unshift(...mountCmd);
+        }
+
+        bundlePath = await createBundle(conf, copys, opt.bundle);
+
         //read jsdos bundle and get Command Interface of jsdos
-        const bundle = fs.readFileSync(opt.bundle);
+        const bundle = fs.readFileSync(bundlePath);
         const ci = await this.emulators.dosboxDirect(bundle);
         const jsdosCi = new JsdosCi(ci, opt);
 
@@ -72,7 +98,6 @@ export class Jsdos implements DosEmu {
             });
         }
 
-        if (Array.isArray(opt.run)) jsdosCi.shell(opt.run.join('\n'))
         return jsdosCi;
     }
 }

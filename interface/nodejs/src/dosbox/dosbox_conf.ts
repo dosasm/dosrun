@@ -1,36 +1,66 @@
 import * as os from 'os';
 import * as ini from 'ini';
 
+type ConfObj = { [section: string]: { [key: string]: any } }
+
 /**works with dosbox conf file,see https://www.dosbox.com/wiki/Dosbox.conf */
 export class BoxConf {
-    target = {}
-    autoexec = [];
-    constructor(o?: { [id: string]: any }) {
-        if (o) {
-            this.target = o;
-            if (!Object.keys(o).includes('AUTOEXEC') && Array.isArray(o['AUTOEXEC'])) {
-                this.autoexec = o['AUTOEXEC'];
+    /**the main part of the configuration */
+    public configu: ConfObj = {};
+    /**the autoexec section of the configuration */
+    public autoexec: string[] = [];
+
+    constructor(conf?: ConfObj, autoexec?: string[]) {
+        if (conf) {
+            this.configu = conf;
+        }
+        if (autoexec) {
+            this.autoexec = autoexec;
+        }
+    }
+
+    updateConf(section: string, key: string, value: any) {
+        if (Object.keys(this.configu).includes(section)) {
+            const sec = this.configu[section];
+            if (Object.keys(sec).includes(key)) {
+                sec[key] = value
+            } else {
+                this.configu[section] = {
+                    [key]: value
+                }
             }
+        } else {
+            this.configu[section] = {
+                [key]: value
+            };
         }
     }
 
     toString() {
-        return BoxConf.stringfy(this)
+        return BoxConf.stringfy(this);
     }
+
+    toJSON() {
+
+    }
+
+    static parse(str: string) {
+        const obj = ini.parse(str);
+        const section = Object.keys(obj).find(val => val.toLowerCase() === 'autoexec');
+        let autoexec = undefined;
+        if (section) {
+            autoexec = Object.keys(obj[section])
+            delete obj[section];
+        }
+        return new BoxConf(obj, autoexec);
+    }
+
     static stringfy(conf: BoxConf) {
-        let str = ini.stringify(conf.target);
-        str = str.replace(/AUTOEXEC\[\]=(.*)\n/g, "")
+        let str = ini.stringify(conf.configu, { section: '', whitespace: true });
         const nl = os.EOL;
         if (conf.autoexec && conf.autoexec.length > 0) {
-            str += `${nl}[AUTOEXEC]${nl}${conf.autoexec.join(nl)}`
+            str += `${nl}[autoexec]${nl}${conf.autoexec.join(nl)}`
         }
         return str;
     }
-    static parse(str: string) {
-        const obj = ini.parse(str);
-        const res = new BoxConf(obj);
-        return res
-    }
 }
-
-

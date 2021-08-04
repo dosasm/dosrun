@@ -1,8 +1,6 @@
 import * as assert from 'assert';
 import 'mocha';
 import * as api from '../api';
-import { resolve } from 'path';
-import { projectFolder } from '../util'
 
 describe('open emulators', async function () {
     describe('run dosbox', async function () {
@@ -27,8 +25,7 @@ describe('open emulators', async function () {
         it('get jsdos command interface', async function () {
             const db = new api.Jsdos();
             const ci = await db.launch({
-                disableStdout: true,
-                bundle: resolve(projectFolder, 'test', 'empty.jsdos')
+                disableStdout: true
             });
             const height = ci.ci.height();
             assert.ok(true, JSON.stringify(height));

@@ -4,7 +4,7 @@ import { join, resolve, relative, basename } from 'path';
 import * as JSZip from 'jszip';
 import { BoxConf } from '../dosbox/dosbox_conf';
 import { getTmpDir } from '../util';
-import { join as posixjoin } from 'path/posix';
+import * as path from 'path';
 
 /**create a jsdos bundle file by add new files to the sample. powered by https://stuk.github.io/jszip/
  * 
@@ -29,7 +29,7 @@ export async function createBundle(conf?: BoxConf, copys?: { from: string, to: s
                 if (s.isDirectory()) {
                     for await (const f of getFiles(m.from)) {
                         const rel = relative(m.from, f);
-                        const dst = posixjoin(m.to, rel)
+                        const dst = path.posix.join(m.to, rel)
                         //console.log(rel, dst)
                         const data = fs.readFileSync(f);
                         zip.file(dst, data);

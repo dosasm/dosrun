@@ -48,7 +48,6 @@ module.exports = function (_argv: string[]): void {
             if (emu === api.DOSBEMUTYPE.jsdos) {
                 options.server = opt.port ? { port: opt.port } : undefined;
                 const bundle = PathValidfy(opt.bundle);
-                opt.bundle = bundle ? bundle : join(projectFolder, 'test', 'empty.jsdos')
             }
 
             db.launch(options)

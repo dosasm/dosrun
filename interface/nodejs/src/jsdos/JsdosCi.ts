@@ -8,7 +8,9 @@ export class JsdosCi {
   pathprefix = "/home/web_user/";
   /**https://js-dos.com/v7/build/docs/command-interface */
   ci: CommandInterface;
-  fs?: typeof FS;
+  public get fs(): typeof FS {
+    return (this.ci as any).module?.FS;
+  };
   events: CommandInterfaceEvents;
   /**manage the queue of key events */
   codes: KeyPress[] = [];
@@ -47,7 +49,6 @@ export class JsdosCi {
   public allstdout = "";
   constructor(ci: CommandInterface, opt: { disableStdin?: boolean, disableStdout?: boolean }) {
     this.ci = ci;
-    this.fs = (ci as any).module?.FS;
     this.events = ci.events();
     setInterval(() => {
       if (this.ci && this.codes.length > 0) {

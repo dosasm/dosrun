@@ -1481,6 +1481,11 @@ node-releases@^1.1.71:
   resolved "https://registry.nlark.com/node-releases/download/node-releases-1.1.73.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fnode-releases%2Fdownload%2Fnode-releases-1.1.73.tgz"
   integrity sha1-3U6B3dUnf/hGuAtSu0DEnt96eyA=
 
+node-watch@^0.7.1:
+  version "0.7.1"
+  resolved "https://registry.npm.taobao.org/node-watch/download/node-watch-0.7.1.tgz#0caaa6a6833b0d533487f953c52a6c787769ba7c"
+  integrity sha1-DKqmpoM7DVM0h/lTxSpseHdpunw=
+
 normalize-path@^3.0.0, normalize-path@~3.0.0:
   version "3.0.0"
   resolved "https://registry.nlark.com/normalize-path/download/normalize-path-3.0.0.tgz#0dcd69ff23a1c9b11fd0978316644a0388216a65"

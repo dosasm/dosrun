@@ -1,14 +1,15 @@
-import * as fs from "fs";
-import { JsdosCi } from "./JsdosCi";
-import { startServer } from "./server";
-import { join } from 'path';
 import * as emu from 'emulators';
-import { BoxInMessage } from "./message";
-import { logger, projectFolder, getTmpDir } from "../util";
+import * as fs from "fs";
+import * as path from "path";
+import { join } from 'path';
+import watch from 'node-watch';
 import { commonLaunchOption, DOSBEMUTYPE, DosEmu } from "../api";
-import path = require("path");
 import { BoxConf } from "../dosbox/dosbox_conf";
+import { logger, projectFolder } from "../util";
 import { createBundle } from "./bundles";
+import { JsdosCi } from "./JsdosCi";
+import { BoxInMessage } from "./message";
+import { startServer } from "./server";
 
 export interface jsdosOption extends commonLaunchOption {
     /**The jsdos bundle to run*/
@@ -16,6 +17,9 @@ export interface jsdosOption extends commonLaunchOption {
     disableStdin?: boolean,
     disableStdout?: boolean,
     autoexec?: string[],
+
+    watchMounts?: boolean,
+    mount?: { from: string, to: string, watch?: boolean }[];
 
     server?: {
         port: number,
@@ -53,7 +57,7 @@ export class Jsdos implements DosEmu {
     async launch(opt: jsdosOption) {
         logger.log(opt);
         let bundlePath = opt.bundle;
-        let copys = [];
+        let copys: { from: string, to: string }[] = [];
         let conf = new BoxConf();
 
         if (typeof opt.confStr === 'string') {
@@ -79,6 +83,34 @@ export class Jsdos implements DosEmu {
         const bundle = fs.readFileSync(bundlePath);
         const ci = await this.emulators.dosboxDirect(bundle);
         const jsdosCi = new JsdosCi(ci, opt);
+
+        //TODO: implement a file watcher to write changes for local file system to the jsdos bundle
+        //Need help: why no module I can get 
+        //- https://discord.com/channels/732544419189882890/786612599164895243/811775548002664458
+        //- https://github.com/caiiiycuk/js-dos/issues/130
+        if (jsdosCi.fs) {
+            for (const c of copys) {
+                let watcher = watch(c.from, { recursive: true });
+
+                watcher.on('change', function (evt, name: string) {
+                    const rel = path.relative(c.from, name);
+                    const dst = join(c.to, rel);
+                    const data = fs.readFileSync(name);
+                    logger.log('changed ', name)
+                    jsdosCi.fs.writeFile(dst, data);
+                    jsdosCi.rescan();
+                });
+
+                watcher.on('error', function (err) {
+                    // handle error
+                });
+
+                watcher.on('ready', function () {
+                    // the watcher is ready to respond to changes
+                });
+            }
+        }
+
 
         //start a server (express app) to show the dosbox
         if (opt.server) {

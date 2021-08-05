@@ -25,16 +25,32 @@ describe('js-dos test', async function () {
             ]
         });
         const height = ci.ci.height();
-        assert.ok(height, JSON.stringify(height));
+        assert.ok(height >= 0);
         assert.ok(ci.allstdout.includes('INDEX'), ci.allstdout)
     });
 
     it('test shell command', async function () {
         const db = new Jsdos();
         const ci = await db.launch({
+            disableStdout: true,
+            server: {
+                port: 3000
+            }
         });
         ci.shell('ver');
         ci.shell('exit');
-        console.log(ci.allstdout)
+        const p = new Promise<string>(
+            (resolve) => {
+                ci.events.onStdout(
+                    val => {
+                        if (val.toLowerCase().includes('ver')) {
+                            resolve(val)
+                        }
+                    }
+                )
+            }
+        )
+        const r = await p;
+        assert.ok(ci.allstdout.includes('VER'), ci.allstdout)
     })
 })

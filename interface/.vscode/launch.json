@@ -10,33 +10,14 @@
             "name": "Mocha Tests",
             "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
             "args": [
-                "-u",
-                "bdd",
-                "--timeout",
-                "999999",
                 "--colors",
-                "${workspaceFolder}/nodejs/out/test/"
+                "--no-timeout"
             ],
             "internalConsoleOptions": "openOnSessionStart",
             "skipFiles": [
                 "<node_internals>/**"
-            ]
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
-            "name": "Launch Program",
-            "skipFiles": [
-                "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/nodejs/out/test.js",
-            "cwd": "${workspaceFolder}",
-            "env": {
-                "DEBUG": "true"
-            },
-            "outFiles": [
-                "${workspaceFolder}/nodejs/out/**/*.js"
-            ],
+            "sourceMaps": true
         }
     ]
 }

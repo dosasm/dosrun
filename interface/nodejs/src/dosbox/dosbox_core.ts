@@ -109,7 +109,7 @@ export class DOSBox_core {
         const p = execa.command(command, { cwd: this.cwd });
         if (this.pipedst.stdout) p.stdout.pipe(this.pipedst.stdout)
         const r = await p;
-        logger.log(r);
+        logger.log(`exec command ${r.escapedCommand} at ${this.cwd}`);
         if (process.platform === 'win32' && command.includes('-noconsole') && this.cwd) {
             const stdmsg = DOSBox_core.winReadConsole(this.cwd);
             if (stdmsg.stdout) {

@@ -1,0 +1,5 @@
+{
+    "spec": "nodejs/out/**/*.test.js",
+    "timeout": 100000,
+    "ui": "bdd"
+}

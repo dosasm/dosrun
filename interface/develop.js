@@ -40,18 +40,11 @@ if (process.argv.includes('copy-bin')) {
 
 const dirs = [
     path.resolve(__dirname, "nodejs/dist/"),
+    path.resolve(__dirname, "nodejs/out/"),
     path.resolve(__dirname, "web/dist")
 ];
 if (process.argv.includes('clean')) {
     for (const dir of dirs) {
-        if (fs.existsSync * dir) {
-            const dirs2 = fs.readdirSync(dir);
-            for (const f of dirs2) {
-                const file = path.resolve(dir, f)
-                if (fs.statSync(file).isFile()) {
-                    fs.rmSync(file);
-                }
-            }
-        }
+        fs.rmSync(dir, { force: true, recursive: true })
     }
 }

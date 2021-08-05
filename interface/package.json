@@ -16,7 +16,7 @@
     "webpack": "webpack --mode=production && node develop.js copy",
     "build": "yarn compile && yarn webpack",
     "clean": "node develop.js clean",
-    "test": "mocha nodejs/out/test/"
+    "test": "mocha"
   },
   "dependencies": {
     "archiver": "^5.3.0",

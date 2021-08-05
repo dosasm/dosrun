@@ -1,6 +1,8 @@
 import { DOSBox_core } from "./dosbox_core";
 import * as api from '../api';
 import { logger } from "../util";
+import * as fs from 'fs';
+import { resolve } from "path";
 
 export interface dosboxXLaunchOptions extends api.commonLaunchOption {
     /**mount the file from the local fs to the emulator's fs */
@@ -29,27 +31,36 @@ export class DOSBox_x extends DOSBox_core implements api.DosEmu {
     }
 
     versionReg: RegExp = /DOSBox-X version (.*?),/g;
-    /**get the version of the dosbox
-     * @return the version part of the output
+    /**get the version of the dosbox-x
+     * for windows, as it will create another window, I can't find a good way
+     * @return string: the version part of the output, or exitcode
     */
-    version(): Promise<string | number> {
-        const p = this.run('-version');
+    async version(): Promise<string | number | undefined> {
+        if (process.platform === 'win32') {
+            const p = await this.run('-silent').catch(
+                err => { }
+            );
+            if (p)
+                return p.exitCode;
+        } else {
+            const p = this.run('-version');
 
-        return new Promise(
-            (r, x) => {
-                p.catch(
-                    e => {
-                        const er = this.versionReg.exec(e.stderr);
-                        if (er) {
-                            r(er[1])
-                        } else {
-                            r(undefined)
+            return new Promise(
+                (r, x) => {
+                    p.catch(
+                        e => {
+                            const er = this.versionReg.exec(e.stderr);
+                            if (er) {
+                                r(er[1])
+                            } else {
+                                r(undefined)
+                            }
                         }
-                    }
-                );
-                setTimeout(() => { x('Time out') }, 3000)
-            }
-        )
+                    );
+                    setTimeout(() => { x('Time out') }, 3000)
+                }
+            )
+        }
     }
 
     static create(opt: { name?: string, path?: string, darwinApp?: boolean }) {
@@ -70,12 +81,40 @@ export class DOSBox_x extends DOSBox_core implements api.DosEmu {
         db.cwd = path;
         return db;
     }
+
     static async auto(name: string = 'dosbox-x'): Promise<DOSBox_x[]> {
         const list = [
-            DOSBox_x.create({ name }),
-            DOSBox_x.create({ name, darwinApp: true })
+            DOSBox_x.create({ name })
         ];
 
+        switch (process.platform) {
+            case 'win32':
+                const possibleFolders = [
+                    'C:\\Program Files (x86)\\',
+                    'D:\\Program Files (x86)\\',
+                    'C:\\Program Files',
+                    'D:\\Program Files'
+                ];
+                if (process.env.USERPROFILE) {
+                    possibleFolders.push(resolve(process.env.USERPROFILE, '\Desktop'))
+                }
+                for (const d of possibleFolders) {
+                    if (fs.existsSync(d)) {
+                        const subs = fs.readdirSync(d);
+                        const sub = subs.find(val => val.toLowerCase().includes('dosbox-x'));
+                        if (sub) {
+                            const db = DOSBox_x.create({ name });
+                            db.cwd = resolve(d, sub);
+                            list.push(db);
+                        }
+                    }
+                }
+
+                break;
+            case 'darwin':
+                list.push(DOSBox_x.create({ name, darwinApp: true }))
+                break
+        }
 
         const result: DOSBox_x[] = [];
         for (const idx in list) {

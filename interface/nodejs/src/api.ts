@@ -1,6 +1,6 @@
-import { Jsdos, jsdosOption } from "./jsdos";
-import { DOSBox } from "./dosbox/dosbox";
-import { DOSBox_x } from "./dosbox/dosbox-x";
+import { Jsdos, jsdosCreateOption, jsdosOption } from "./jsdos";
+import { DOSBox, dosboxCreateOption } from "./dosbox/dosbox";
+import { dosboxXCreateOption, DOSBox_x } from "./dosbox/dosbox-x";
 import { dosboxLaunchOptions } from "./dosbox/dosbox_core";
 
 /** different emulators for emulating DOS enviremonent
@@ -21,6 +21,17 @@ export enum DOSBEMUTYPE {
      * @github: https://github.com/caiiiycuk/js-dos
      */
     jsdos = 'js-dos'
+}
+
+export interface commonCreateOption {
+    /**the type of the emulator */
+    type: DOSBEMUTYPE,
+    /**the absolute path of the emulator
+     * 
+     * - for dosbox-like, will be used as cwd,pass `<osxpp>` for macOs user to open application in `/Applications`
+     * - for jsdos, put the folder of `dist` here, will require 'emulators.js' from this path
+     */
+    path?: string,
 }
 
 /**Common Launch options supported by all emulators
@@ -86,19 +97,21 @@ export abstract class DosEmu {
     abstract launch(option: commonLaunchOption): any;
 
     /**create Dosbox according to given path and more args*/
-    static create(path: string, ...args: any[]): DosEmu | Promise<DosEmu> | undefined { return undefined }
+    static create(option: commonCreateOption): DosEmu | Promise<DosEmu> | undefined { return undefined }
     /**automatically scan the system and create possible DOSBOx */
     static auto(): DosEmu[] | Promise<DosEmu[]> { return [] };
 }
 
-export function getDosbox(type: DOSBEMUTYPE, path?: string, darwinApp?: boolean) {
-    switch (type) {
+export type createOptions = dosboxCreateOption | dosboxXCreateOption | jsdosCreateOption;
+
+export function getDosbox(opt: createOptions) {
+    switch (opt.type) {
         case DOSBEMUTYPE.jsdos:
-            return new Jsdos(path);
+            return Jsdos.create(opt);
         case DOSBEMUTYPE.dosbox:
-            return DOSBox.create({ path, darwinApp });
+            return DOSBox.create(opt);
         case DOSBEMUTYPE.dosbox_x:
-            return DOSBox_x.create({ path, darwinApp });
+            return DOSBox_x.create(opt);
     }
 }
 

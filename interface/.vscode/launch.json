@@ -5,6 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Launch Program",
+            "program": "${workspaceFolder}/nodejs/out/dbx",
+            "args": [
+                "j"
+            ],
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
             "type": "node",
             "request": "launch",
             "name": "Mocha Tests",

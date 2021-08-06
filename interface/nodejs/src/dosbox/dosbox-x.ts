@@ -4,6 +4,13 @@ import { logger } from "../util";
 import * as fs from 'fs';
 import { resolve } from "path";
 
+export interface dosboxXCreateOption extends api.commonCreateOption {
+    /**the command for open dosbox-x */
+    command?: string
+    /**the name of the dosbox-x */
+    name?: string
+}
+
 export interface dosboxXLaunchOptions extends api.commonLaunchOption {
     /**mount the file from the local fs to the emulator's fs */
     mount?: { from: string, to: string }[];
@@ -63,22 +70,24 @@ export class DOSBox_x extends DOSBox_core implements api.DosEmu {
         }
     }
 
-    static create(opt: { name?: string, path?: string, darwinApp?: boolean }) {
-        const name = opt.name ? opt.name : 'dosbox-x';
-        const path = opt.path;
+    static create(opt: dosboxXCreateOption | Omit<dosboxXCreateOption, 'type'>) {
+        const { path } = opt;
+        let { command, name } = opt;
+        if (name === undefined) name = 'dosbox-x';
         //command for open dosbox
-        let command = name;
-        //for windows,using different command according to dosbox's path and the choice of the console window
-        switch (process.platform) {
-            case 'win32':
-                break;
-            case 'darwin':
-                if (opt.darwinApp)
-                    command = `open -a ${name} --wait --args`;
-                break;
+        if (command === undefined) {
+            command = name;
+            //for windows,using different command according to dosbox's path and the choice of the console window
+            switch (process.platform) {
+                case 'darwin':
+                    if (opt.path === '<osxapp>')
+                        command = `open -a ${name} --wait --args`;
+                    break;
+            }
         }
         const db = new DOSBox_x(command);
-        db.cwd = path;
+        if (fs.existsSync(path))
+            db.cwd = path;
         return db;
     }
 
@@ -96,7 +105,7 @@ export class DOSBox_x extends DOSBox_core implements api.DosEmu {
                     'D:\\Program Files'
                 ];
                 if (process.env.USERPROFILE) {
-                    possibleFolders.push(resolve(process.env.USERPROFILE, '\Desktop'))
+                    possibleFolders.push(resolve(process.env.USERPROFILE, 'Desktop'))
                 }
                 for (const d of possibleFolders) {
                     if (fs.existsSync(d)) {
@@ -112,7 +121,7 @@ export class DOSBox_x extends DOSBox_core implements api.DosEmu {
 
                 break;
             case 'darwin':
-                list.push(DOSBox_x.create({ name, darwinApp: true }))
+                list.push(DOSBox_x.create({ name, path: '<darwin' }))
                 break
         }
 

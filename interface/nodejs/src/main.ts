@@ -1,10 +1,7 @@
 import { program } from 'commander';
 import * as path from 'path';
 import { existsSync } from 'fs';
-
 import * as api from './api';
-import { join } from 'path';
-import { projectFolder } from './util';
 
 const pkg = require('../../package.json');
 
@@ -27,9 +24,9 @@ module.exports = function (_argv: string[]): void {
         .option("-b,--disable-stdin", "disable redirect process stdin to jsdos")
         .option("-p,--port [number]", "start a server to show jsdos's video and audio in port")
         .action((_emu, opt) => {
-            const emu = arg2emuType(_emu);
-            const folder = PathValidfy(opt.folder);
-            const db = api.getDosbox(emu, folder, opt.useDarwinApp);
+            const type = arg2emuType(_emu);
+            const folder = opt.useDarwinApp ? '<osxapp>' : PathValidfy(opt.folder);
+            const db = api.getDosbox({ type, path: folder });
             const options = opt;
             if (opt.mount) {
                 opt.mount = opt.mount.map(
@@ -45,9 +42,9 @@ module.exports = function (_argv: string[]): void {
                 )
             }
 
-            if (emu === api.DOSBEMUTYPE.jsdos) {
+            if (type === api.DOSBEMUTYPE.jsdos) {
                 options.server = opt.port ? { port: opt.port } : undefined;
-                const bundle = PathValidfy(opt.bundle);
+                opt.bundle = PathValidfy(opt.bundle);
             }
 
             db.launch(options)

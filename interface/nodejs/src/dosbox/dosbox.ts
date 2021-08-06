@@ -4,6 +4,12 @@ import { logger } from "../util";
 import { DOSBox_core, WINCONSOLEOPTION } from "./dosbox_core";
 import path = require("path");
 
+export interface dosboxCreateOption extends api.commonCreateOption {
+    command?: string
+    name?: string,
+    console?: WINCONSOLEOPTION
+}
+
 export interface dosboxLaunchOptions extends api.commonLaunchOption {
     /**mount the file from the local fs to the emulator's fs */
     mount?: { from: string, to: string }[];
@@ -42,35 +48,39 @@ export class DOSBox extends DOSBox_core implements api.DosEmu {
         };
         return info.exitCode;
     }
-    static create(opt: { name?: string, path?: string, console?: WINCONSOLEOPTION, darwinApp?: boolean }) {
-        const name = opt.name ? opt.name : 'dosbox';
-        const path = opt.path;
-        const console = opt.console;
-        //command for open dosbox
-        let command = name;
-        //for windows,using different command according to dosbox's path and the choice of the console window
-        switch (process.platform) {
-            case 'win32':
-                switch (console) {
-                    case WINCONSOLEOPTION.min:
-                        command = `start/min/wait "" ${name}`;
-                        break;
-                    case WINCONSOLEOPTION.normal:
-                        command = name
-                        break;
-                    case WINCONSOLEOPTION.noconsole:
-                    default:
-                        command = `${name} -noconsole`
-                        break;
-                }
-                break;
-            case 'darwin':
-                if (opt.darwinApp)
-                    command = `open -a ${name} --wait --args`;
-                break;
+    static create(opt: dosboxCreateOption | Omit<dosboxCreateOption, 'type'>) {
+        const { path, console } = opt;
+        let { name, command } = opt;
+        if (!name) name = 'dosbox';
+
+        if (command === undefined) {
+            command = name;
+            //for windows,using different command according to dosbox's path and the choice of the console window
+            switch (process.platform) {
+                case 'win32':
+                    switch (console) {
+                        case WINCONSOLEOPTION.min:
+                            command = `start/min/wait "" ${name}`;
+                            break;
+                        case WINCONSOLEOPTION.normal:
+                            command = name
+                            break;
+                        case WINCONSOLEOPTION.noconsole:
+                        default:
+                            command = `${name} -noconsole`
+                            break;
+                    }
+                    break;
+                case 'darwin':
+                    if (opt.path === '<osxapp>')
+                        command = `open -a ${name} --wait --args`;
+                    break;
+            }
         }
+
         const db = new DOSBox(command);
-        db.cwd = path;
+        if (fs.existsSync(path))
+            db.cwd = path;
         return db;
     }
 
@@ -98,7 +108,7 @@ export class DOSBox extends DOSBox_core implements api.DosEmu {
 
                 break;
             case 'darwin':
-                list.push(DOSBox.create({ name, darwinApp: true }))
+                list.push(DOSBox.create({ name, path: '<osxapp>' }))
                 break
         }
 

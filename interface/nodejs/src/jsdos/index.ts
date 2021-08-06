@@ -3,13 +3,17 @@ import * as fs from "fs";
 import * as path from "path";
 import { join } from 'path';
 import watch from 'node-watch';
-import { commonLaunchOption, DOSBEMUTYPE, DosEmu } from "../api";
+import { commonCreateOption, commonLaunchOption, DOSBEMUTYPE, DosEmu } from "../api";
 import { BoxConf } from "../dosbox/dosbox_conf";
 import { logger, projectFolder } from "../util";
 import { createBundle } from "./bundles";
 import { JsdosCi } from "./JsdosCi";
 import { BoxInMessage } from "./message";
 import { startServer } from "./server";
+
+export interface jsdosCreateOption extends commonCreateOption {
+
+}
 
 export interface jsdosOption extends commonLaunchOption {
     /**The jsdos bundle to run*/
@@ -33,6 +37,9 @@ export interface jsdosOption extends commonLaunchOption {
 export class Jsdos implements DosEmu {
     static auto() {
         return [new Jsdos()];
+    }
+    static create(opt: commonCreateOption) {
+        return new Jsdos(opt.path);
     }
     public type = DOSBEMUTYPE.jsdos;
     private emulators: emu.Emulators;

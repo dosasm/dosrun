@@ -11,7 +11,9 @@ export class JsdosCi {
   public get fs(): typeof FS {
     return (this.ci as any).module?.FS;
   };
-  events: CommandInterfaceEvents;
+  public get events(): CommandInterfaceEvents {
+    return this.ci.events();
+  };
   /**manage the queue of key events */
   codes: KeyPress[] = [];
 
@@ -49,7 +51,6 @@ export class JsdosCi {
   public allstdout = "";
   constructor(ci: CommandInterface, opt: { disableStdin?: boolean, disableStdout?: boolean }) {
     this.ci = ci;
-    this.events = ci.events();
     setInterval(() => {
       if (this.ci && this.codes.length > 0) {
         const key = this.codes.shift();

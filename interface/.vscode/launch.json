@@ -8,7 +8,9 @@
             "name": "Launch Program",
             "program": "${workspaceFolder}/nodejs/out/dbx",
             "args": [
-                "j"
+                "j",
+                "-p",
+                "3000"
             ],
             "request": "launch",
             "skipFiles": [

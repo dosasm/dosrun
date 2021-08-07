@@ -3,21 +3,31 @@
 	"tasks": [
 		{
 			"type": "npm",
-			"script": "watch",
-			"problemMatcher": [
-				"$tsc-watch"
-			],
-			"group": "build",
-			"label": "npm: watch",
-		},
-		{
-			"type": "npm",
 			"script": "build",
 			"problemMatcher": [
+				"$tsc",
 				"$ts-webpack"
 			],
 			"group": "build",
 			"label": "npm:build"
+		},
+		{
+			"type": "typescript",
+			"tsconfig": "client/tsconfig.json",
+			"option": "watch",
+			"problemMatcher": [
+				"$tsc-watch"
+			],
+			"group": "build",
+			"label": "tsc: 监视 - client/tsconfig.json"
+		},
+		{
+			"type": "npm",
+			"script": "watch-webpack",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: watch-webpack",
+			"detail": "webpack --watch --mode=development"
 		}
 	]
 }

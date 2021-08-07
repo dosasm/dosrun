@@ -1,7 +1,7 @@
 import * as emu from 'emulators';
 import * as fs from "fs";
 import * as path from "path";
-import { join } from 'path';
+import { join, resolve } from 'path';
 import watch from 'node-watch';
 import { commonCreateOption, commonLaunchOption, DOSBEMUTYPE, DosEmu } from "../api";
 import { BoxConf } from "../dosbox/dosbox_conf";
@@ -121,7 +121,7 @@ export class Jsdos implements DosEmu {
 
         //start a server (express app) to show the dosbox
         if (opt.server) {
-            const emuUiDist: string = typeof opt.server.emuUiDist === 'string' ? opt.server.emuUiDist : join(__dirname, '../../node_modules/emulators-ui/dist/')
+            const emuUiDist: string = typeof opt.server.emuUiDist === 'string' ? opt.server.emuUiDist : resolve(projectFolder, 'node_modules/emulators-ui/dist/')
             startServer(jsdosCi, emuUiDist, opt.server.port);
         }
 

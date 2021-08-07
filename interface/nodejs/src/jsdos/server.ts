@@ -13,9 +13,8 @@ export function startServer(jsdosCi: JsdosCi, emuUiDist: string, serverPort?: nu
     const httpServer = createServer(app);
     const io = new Server(httpServer, { serveClient: false });
 
-    app.use('/resources', express.static(path.resolve(projectFolder, './web/resources')));
-    app.use('/dist', express.static(path.resolve(projectFolder, './web/dist')));
-    app.use('/jsdos', express.static(emuUiDist));
+    app.use('/dist', express.static(path.resolve(projectFolder, 'web', 'dist')));
+    app.use('/node_modules/emulators-ui/dist', express.static(emuUiDist));
 
     app.get('/', function (_, res) {
         res.sendFile('/web/index.html', { root: projectFolder });

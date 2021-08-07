@@ -21,8 +21,8 @@
   "dependencies": {
     "archiver": "^5.3.0",
     "commander": "^8.0.0",
-    "emulators": "^0.64",
-    "emulators-ui": "^0.0.62",
+    "emulators": "^0.67",
+    "emulators-ui": "^0.68",
     "execa": "^5.1.1",
     "express": "^4.17.1",
     "ini": "^2.0.0",

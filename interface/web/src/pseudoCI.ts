@@ -65,6 +65,8 @@ export class CI implements CommandInterface {
             }
         });
     }
+    sendMouseRelativeMotion: (x: number, y: number) => void;
+    sendMouseSync: () => void;
     _width = 0;
     _height = 0;
     _freq = 0;

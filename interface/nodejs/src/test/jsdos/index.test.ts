@@ -4,12 +4,13 @@ import { Jsdos } from "../../jsdos";
 describe('js-dos test', async function () {
     it('mount files and autoexec', async function () {
         const db = new Jsdos();
+        const testvalue = 2000;
         const ci = await db.launch({
             disableStdout: true,
             disableStdin: true,
-            confStr: {
+            configuration: {
                 cpu: {
-                    cycles: 2000
+                    cycles: testvalue
                 }
             },
             mount: [
@@ -21,24 +22,25 @@ describe('js-dos test', async function () {
             autoexec: [
                 "c:",
                 "dir",
+                'config -get "cpu cycles"',
                 "exit"
             ]
         });
         const height = ci.ci.height();
         assert.ok(height >= 0);
-        assert.ok(ci.allstdout.includes('INDEX'), ci.allstdout)
+        assert.ok(ci.allstdout.includes('INDEX'), 'mount file error\n' + ci.allstdout);
+        assert.ok(ci.allstdout.includes(testvalue.toString()), 'set config error\n' + ci.allstdout)
     });
 
     it('test shell command', async function () {
+        this.skip();
         const db = new Jsdos();
         const ci = await db.launch({
             disableStdout: true,
-            server: {
-                port: 3000
-            }
         });
         ci.shell('ver');
         ci.shell('exit');
+
         const p = new Promise<string>(
             (resolve) => {
                 ci.events.onStdout(

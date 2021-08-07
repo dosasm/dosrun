@@ -65,13 +65,12 @@ export class Jsdos implements DosEmu {
         logger.log(opt);
         let bundlePath = opt.bundle;
         let copys: { from: string, to: string }[] = [];
-        let conf = new BoxConf();
 
-        if (typeof opt.confStr === 'string') {
-            conf = BoxConf.parse(opt.confStr);
-        } else {
-            conf = new BoxConf(opt.confStr);
+        let conf = new BoxConf();
+        if (opt.configuration) {
+            conf = BoxConf.create(opt.configuration);
         }
+
         if (opt.autoexec) {
             conf.autoexec = opt.autoexec;
         }

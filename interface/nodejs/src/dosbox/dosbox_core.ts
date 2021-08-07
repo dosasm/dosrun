@@ -35,7 +35,7 @@ export class DOSBox_core {
      * if the cmds you pass over this limit
      * the cmds will be write to conf files's `AUTOEXEC` section
     */
-    static MAX_DOSBOX_COMMAND = 10;
+    static MAX_DOSBOX_COMMAND = 0;
     /**read the dosbox's console std information for win32
    * @param folder the folder to store stdout and stderr, usually the folder of dosbox.exe
    */

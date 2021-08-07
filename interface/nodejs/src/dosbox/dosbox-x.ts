@@ -3,6 +3,7 @@ import * as api from '../api';
 import { logger } from "../util";
 import * as fs from 'fs';
 import { resolve } from "path";
+import { BoxConf } from "./dosbox_conf";
 
 export interface dosboxXCreateOption extends api.commonCreateOption {
     /**the command for open dosbox-x */
@@ -22,6 +23,12 @@ export class DOSBox_x extends DOSBox_core implements api.DosEmu {
     type = api.DOSBEMUTYPE.dosbox_x;
 
     launch(option: dosboxXLaunchOptions) {
+        if (option.configuration) {
+            const conf = BoxConf.create(option.configuration);
+            if (conf) {
+                this.conf = conf;
+            }
+        }
         const mount = Array.isArray(option.mount) ? option.mount.map(val => {
             if (val.to.length > 1) {
                 logger.warn(val.to, 'is not allowed');

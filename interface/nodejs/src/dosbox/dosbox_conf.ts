@@ -44,6 +44,17 @@ export class BoxConf {
 
     }
 
+    static create(target: string | { [id: string]: { [id: string]: boolean | string | number } }) {
+        switch (typeof target) {
+            case 'string':
+                return BoxConf.parse(target);
+            case 'object':
+                return new BoxConf(target);
+            default:
+                return new BoxConf();
+        }
+    }
+
     static parse(str: string) {
         const obj = ini.parse(str);
         const section = Object.keys(obj).find(val => val.toLowerCase() === 'autoexec');

@@ -2,6 +2,7 @@ import { Jsdos, jsdosCreateOption, jsdosOption } from "./jsdos";
 import { DOSBox, dosboxCreateOption } from "./dosbox/dosbox";
 import { dosboxXCreateOption, DOSBox_x } from "./dosbox/dosbox-x";
 import { dosboxLaunchOptions } from "./dosbox/dosbox_core";
+import { BoxConf } from "./dosbox/dosbox_conf";
 
 /** different emulators for emulating DOS enviremonent
  */
@@ -64,14 +65,14 @@ export interface commonLaunchOption {
      */
     parameters?: string;
 
-    /** The dosbox configurations file
-     * For simplicity, the `AUTOEXEC` section will be ignored is set autoexec
-     * pass the **CONTENT** of your configuration here
+    /** The dosbox configuration file
+     * For simplicity, the `AUTOEXEC` section will be ignored if the `autoexec` option is defined
+     * pass the **CONTENT** of your configuration file or a **Object** here
      *
      * - for **js-dos** and **dosbox**, see https://www.dosbox.com/wiki/Dosbox.conf
      * - for **dosbox-x**, see https://github.com/joncampbell123/dosbox-x/blob/master/dosbox-x.reference.full.conf and https://dosbox-x.com/wiki/
      */
-    confStr?: string | { [id: string]: { [id: string]: any } };
+    configuration?: string | { [section: string]: { [property: string]: boolean | number | string } };
 }
 
 export type launchOptions = dosboxLaunchOptions | jsdosOption

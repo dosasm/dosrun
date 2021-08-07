@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import { logger } from "../util";
 import { DOSBox_core, WINCONSOLEOPTION } from "./dosbox_core";
 import path = require("path");
+import { BoxConf } from './dosbox_conf';
 
 export interface dosboxCreateOption extends api.commonCreateOption {
     command?: string
@@ -21,6 +22,12 @@ export class DOSBox extends DOSBox_core implements api.DosEmu {
     type = api.DOSBEMUTYPE.dosbox;
 
     launch(option: dosboxLaunchOptions) {
+        if (option.configuration) {
+            const conf = BoxConf.create(option.configuration);
+            if (conf) {
+                this.conf = conf;
+            }
+        }
         const mount = Array.isArray(option.mount) ? option.mount.map(val => {
             if (val.to.length > 1) {
                 logger.warn(val.to, 'is not allowed');
@@ -105,7 +112,6 @@ export class DOSBox extends DOSBox_core implements api.DosEmu {
                         }
                     }
                 }
-
                 break;
             case 'darwin':
                 list.push(DOSBox.create({ name, path: '<osxapp>' }))

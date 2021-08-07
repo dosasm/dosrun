@@ -106,6 +106,8 @@ export class DOSBox_x extends DOSBox_core implements api.DosEmu {
         switch (process.platform) {
             case 'win32':
                 const possibleFolders = [
+                    'c:\\',
+                    "d:\\",
                     'C:\\Program Files (x86)\\',
                     'D:\\Program Files (x86)\\',
                     'C:\\Program Files',

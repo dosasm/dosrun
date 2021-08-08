@@ -21,3 +21,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# js-dos dist files
+public/emulators*/
+# js-dos bundles
+public/bundles/

@@ -4340,6 +4340,16 @@ emojis-list@^3.0.0:
   resolved "https://registry.nlark.com/emojis-list/download/emojis-list-3.0.0.tgz#5570662046ad29e2e916e71aae260abdff4f6a78"
   integrity sha1-VXBmIEatKeLpFucariYKvf9Pang=
 
+emulators-ui@^0.68.0:
+  version "0.68.0"
+  resolved "https://registry.nlark.com/emulators-ui/download/emulators-ui-0.68.0.tgz#145363978236a57a934bc2f4c0aea5583d2eab7b"
+  integrity sha1-FFNjl4I2pXqTS8L0wK6lWD0uq3s=
+
+emulators@^0.67.0:
+  version "0.67.0"
+  resolved "https://registry.nlark.com/emulators/download/emulators-0.67.0.tgz#9daba2fd48cdb634d2c55b12c7116e61ffd2c6b6"
+  integrity sha1-naui/UjNtjTSxVsSxxFuYf/SxrY=
+
 encodeurl@~1.0.2:
   version "1.0.2"
   resolved "https://registry.npm.taobao.org/encodeurl/download/encodeurl-1.0.2.tgz#ad3ff4c86ec2d029322f5a02c3a9a606c95b3f59"

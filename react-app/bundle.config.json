@@ -1,0 +1,95 @@
+{
+    "$comment": "Configurations for jsdos bundle and their usage",
+    "singelMode": [
+        {
+            "baseBundle": "MASM.jsdos",
+            "actions": [
+                {
+                    "label": "run",
+                    "zh-cn": "运行代码",
+                    "CodeDestination": "/test/test.asm",
+                    "command": [
+                        "mount c ./",
+                        "mount d ./test/",
+                        "set PATH=C:\\masm",
+                        "d:",
+                        "masm test.asm;",
+                        "link test.obj;",
+                        "test.exe"
+                    ]
+                },
+                {
+                    "label": "debug",
+                    "zh-cn": "使用debug调试",
+                    "CodeDestination": "/test/test.asm",
+                    "command": [
+                        "mount c ./",
+                        "mount d ./test/",
+                        "set PATH=C:\\masm",
+                        "d:",
+                        "masm test.asm",
+                        "link test.obj",
+                        "test.exe"
+                    ]
+                },
+                {
+                    "label": "list",
+                    "zh-cn": "生成lst文件",
+                    "CodeDestination": "/test/test.asm",
+                    "command": [
+                        "mount c ./",
+                        "mount d ./test/",
+                        "set PATH=C:\\masm",
+                        "d:",
+                        "masm /la test.asm;"
+                    ]
+                }
+            ]
+        },
+        {
+            "baseBundle": "TASM.jsdos",
+            "actions": [
+                {
+                    "label": "run",
+                    "zh-cn": "运行代码",
+                    "CodeDestination": "/test/test.asm",
+                    "command": [
+                        "mount c ./",
+                        "mount d ./test/",
+                        "set PATH=C:\\masm",
+                        "d:",
+                        "tasm test.asm;",
+                        "tlink test.obj;",
+                        "test.exe"
+                    ]
+                },
+                {
+                    "label": "debug",
+                    "zh-cn": "使用TD调试",
+                    "CodeDestination": "/test/test.asm",
+                    "command": [
+                        "mount c ./",
+                        "mount d ./test/",
+                        "set PATH=C:\\masm",
+                        "d:",
+                        "tasm /zi test.asm",
+                        "tlink /v/3 test.obj",
+                        "TD test.exe"
+                    ]
+                },
+                {
+                    "label": "list",
+                    "zh-cn": "生成lst文件",
+                    "CodeDestination": "/test/test.asm",
+                    "command": [
+                        "mount c ./",
+                        "mount d ./test/",
+                        "set PATH=C:\\masm",
+                        "d:",
+                        "tasm /la test.asm;"
+                    ]
+                }
+            ]
+        }
+    ]
+}

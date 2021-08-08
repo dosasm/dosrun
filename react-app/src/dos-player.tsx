@@ -19,10 +19,8 @@ export default function DosPlayer(props: PlayerProps) {
 
         const root = rootRef.current as HTMLDivElement;
 
-        console.log(window);
-
         const instance = Dos(root, {
-            emulatorFunction: "dosboxWorker",
+            emulatorFunction: "dosboxDirect",
         });
 
         setDos(instance);
@@ -34,7 +32,11 @@ export default function DosPlayer(props: PlayerProps) {
 
     useEffect(() => {
         if (dos !== null) {
-            dos.run(props.bundleUrl); // ci is returned
+            dos.run(props.bundleUrl).then(
+                ci => {
+                    console.log(ci)
+                }
+            ); // ci is returned
         }
     }, [dos, props.bundleUrl]);
 

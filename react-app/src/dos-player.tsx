@@ -39,7 +39,9 @@ export default function DosPlayer(props: PlayerProps) {
                     ci = _ci;
                     layers.hideLoadingLayer();
                     emulatorsUi.graphics.webGl(layers, ci);
-                    emulatorsUi.controls.keyboard(layers, ci, {});
+                    emulatorsUi.controls.mouse(layers, ci);
+                    emulatorsUi.sound.audioNode(ci);
+                    emulatorsUi.controls.options(layers, ["default"], () => {/**/ }, 54, 54 / 4, 0)
                 }
             );
         }
@@ -48,6 +50,24 @@ export default function DosPlayer(props: PlayerProps) {
         }
     }, [layers, props.bundle]);
 
-    return <div ref={rootRef} style={{ width: "100%", height: "100%" }}>
+    return <div ref={rootRef} tabIndex={0}
+        onBlur={
+            e => {
+                if (layers && ci) {
+                    //use a psedo ci to prevent the key events to emulators
+                    //@see https://github.com/caiiiycuk/js-dos/issues/94
+                    const pseudo = { sendKeyEvent: () => { } }
+                    emulatorsUi.controls.keyboard(layers, pseudo as any as CommandInterface, {});
+                }
+            }
+        }
+        onFocus={
+            event => {
+                if (layers && ci) {
+                    emulatorsUi.controls.keyboard(layers, ci, {});
+                }
+            }
+        }
+    >
     </div>;
 }

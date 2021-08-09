@@ -1,4 +1,5 @@
 import JSZip from "jszip";
+import { homepage } from '../package.json'
 
 export class BundleZip {
     public zip: JSZip = new JSZip();
@@ -8,7 +9,8 @@ export class BundleZip {
         this.zip.file('.jsdos/dosbox.conf', '[AUTOEXEC]')
     }
     async download(bundleUrl: string) {
-        const response = await fetch(bundleUrl);
+        const a = new URL(homepage);
+        const response = await fetch(a.pathname + bundleUrl);
         if (response.status === 200 || response.status === 0) {
             const blob = await response.blob();
             this.zip = await JSZip.loadAsync(blob);

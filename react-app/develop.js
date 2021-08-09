@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { profiles } = require('./src/bundle.config.json');
 
 if (process.argv.includes('copy') || process.argv.includes('copy-emulators')) {
     copyDir(
@@ -13,10 +14,18 @@ if (process.argv.includes('copy') || process.argv.includes('copy-emulators')) {
 }
 
 if (process.argv.includes('copy') || process.argv.includes('copy-bundles')) {
-    copyDir(
-        path.resolve(__dirname, '../', 'bundles', 'out'),
-        path.resolve(__dirname, 'public', 'bundles')
-    );
+    const srcDir = path.resolve(__dirname, '../', 'bundles', 'out');
+    const dstDir = path.resolve(__dirname, 'public', 'bundles');
+    if (!fs.existsSync(dstDir)) {
+        fs.mkdirSync(dstDir)
+    }
+    for (const p of profiles) {
+        const filename = path.basename(p.baseBundle);
+        fs.copyFileSync(
+            path.resolve(srcDir, filename),
+            path.resolve(dstDir, filename)
+        )
+    }
 }
 
 function copyDir(src, dst) {

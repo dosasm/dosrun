@@ -5,7 +5,7 @@
 			"type": "npm",
 			"script": "start",
 			"problemMatcher": [
-				"$tslint-webpack-watch"
+				"$ts-webpack-watch"
 			],
 			"label": "npm: start",
 			"detail": "react-scripts start",

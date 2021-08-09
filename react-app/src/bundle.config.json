@@ -98,6 +98,51 @@
                     ]
                 }
             ]
+        },
+        {
+            "label": "Turbo C 2.0(T)",
+            "description": "Turbo C 2.0 Compile code in Text Mode. From Gabriel Ortiz(gabrielortizamador@gmail.com)",
+            "baseBundle": "/bundles/TurboC.jsdos",
+            "CodeLanguage": "C",
+            "CodePath": "Code/Text.c",
+            "actions": [
+                {
+                    "label": "run",
+                    "zh-cn": "运行代码",
+                    "CodeDestination": "test/test.c",
+                    "command": [
+                        "mount c ./",
+                        "mount d ./test/",
+                        "d:",
+                        "set PATH=C:\\TC;%PATH%",
+                        "tcc Text.c",
+                        "tcc -Ic:\\tc\\ -Lc:\\tc\\ d:test",
+                        "test.exe"
+                    ]
+                }
+            ]
+        },
+        {
+            "label": "Turbo C 2.0(G)",
+            "description": "Turbo C 2.0 Compile code in Graph Mode. From Gabriel Ortiz(gabrielortizamador@gmail.com)",
+            "baseBundle": "/bundles/TurboC.jsdos",
+            "CodeLanguage": "C",
+            "CodePath": "Code/Graphic.c",
+            "actions": [
+                {
+                    "label": "run",
+                    "zh-cn": "使用TD调试",
+                    "CodeDestination": "test/test.c",
+                    "command": [
+                        "mount c ./",
+                        "mount d ./test/",
+                        "set PATH=C:\\TC;%PATH%",
+                        "d:",
+                        "tcc -Ic:\\tc\\ -Lc:\\tc\\ d:\\test c:\\tc\\graphics.lib",
+                        "test.exe"
+                    ]
+                }
+            ]
         }
     ]
 }

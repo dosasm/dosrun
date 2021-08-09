@@ -1,14 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
 
-import { DosFactoryType, DosInstance } from "emulators-ui/dist/types/js-dos";
 import { CommandInterface, Emulators } from "emulators";
 import { EmulatorsUi } from "emulators-ui";
 import { Layers } from "emulators-ui/dist/types/dom/layers";
 
 declare const emulators: Emulators;
 declare const emulatorsUi: EmulatorsUi;
-
-declare const Dos: DosFactoryType;
 
 interface PlayerProps {
     bundle: Uint8Array;

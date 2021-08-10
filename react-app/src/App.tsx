@@ -114,7 +114,7 @@ function App() {
             value={code}
             language={lang}
             placeholder="Please enter your code."
-            onChange={(evn) => setCode(evn.target.value)}
+            onChange={(evn) => setCode(evn.target.value.replace(/\n/g, '\r\n'))}
             minHeight={80}
             padding={15}
             style={{

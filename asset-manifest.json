@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/dosrun/static/css/main.f0a599cd.chunk.css",
-    "main.js": "/dosrun/static/js/main.7d59a257.chunk.js",
-    "main.js.map": "/dosrun/static/js/main.7d59a257.chunk.js.map",
+    "main.js": "/dosrun/static/js/main.5b2722dc.chunk.js",
+    "main.js.map": "/dosrun/static/js/main.5b2722dc.chunk.js.map",
     "runtime-main.js": "/dosrun/static/js/runtime-main.d30833e8.js",
     "runtime-main.js.map": "/dosrun/static/js/runtime-main.d30833e8.js.map",
     "static/css/2.79097016.chunk.css": "/dosrun/static/css/2.79097016.chunk.css",
@@ -20,6 +20,6 @@
     "static/css/2.79097016.chunk.css",
     "static/js/2.4cf7bcbf.chunk.js",
     "static/css/main.f0a599cd.chunk.css",
-    "static/js/main.7d59a257.chunk.js"
+    "static/js/main.5b2722dc.chunk.js"
   ]
 }

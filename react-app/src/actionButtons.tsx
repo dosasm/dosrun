@@ -15,7 +15,7 @@ export function ActionButtons(props: ActionButtonsProps) {
                 <Button
                     key={"baseOptions-" + val}
                     onClick={(e) => {
-                        onClick(-1 * idx)
+                        onClick(-1 * (idx+1))
                     }}
                 >
                     {val}

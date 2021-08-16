@@ -2,8 +2,6 @@
 
 This Folder is used for uploading JSDos Bundles as Develop environment
 
-In each folder add a `README.txt`, so the App will read it and use it.
+## CAUTION
 
-# Buttons
-
-The App will render bottons from scrips in `scripts` folder
+Dos system uses crlf (\r\n) as EOL (end of lines). So bundling files in system using lf as EOL may cause some problem.

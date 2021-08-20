@@ -23,7 +23,10 @@ export class BundleZip {
             if (autoexec)
                 zip.file('.jsdos/dosbox.conf', '[AUTOEXEC]\n' + autoexec.join('\n'));
             if (file) {
-                zip.file(file.path, file.text);
+                // eslint-disable-next-line no-control-regex
+                const text = file.text.replace(/[^\x00-\x7F]/g, "")//only keep ASCII charactors in file
+                    .replace(/\r/g, "").replace(/\n/g, '\r\n')//use crlf (\r\n) as eol
+                zip.file(file.path, text);
             }
             const bundle = await zip.generateAsync({ type: "uint8array" });
             return bundle;

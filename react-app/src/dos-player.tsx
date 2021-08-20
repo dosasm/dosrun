@@ -34,7 +34,8 @@ export default function DosPlayer(props: PlayerProps) {
 
     useEffect(() => {
         if (layers !== null) {
-            emulators.dosboxWorker(props.bundle).then(
+            const ciP=emulators.dosboxWorker(props.bundle)
+            ciP.then(
                 _ci => {
                     ci = _ci;
                     layers.hideLoadingLayer();

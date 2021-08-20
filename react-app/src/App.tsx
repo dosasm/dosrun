@@ -23,22 +23,64 @@ const bun = new BundleZip();
 
 function App() {
   // const [mode, setMode] = useState(Mode.singleFile);
-  const [env, setEnv] = useState(0);
+  let params = (new URL(document.location.toString())).searchParams;
+  const baseState = {
+    env: 0,
+    code: "",
+    envBaseCode: true
+  };
+  if (params.has('env')) {
+    const idx = profiles.findIndex(val => val.label === params.get('env')?.replace(/[ |_|-]/, ' '));
+    if (idx >= 0) {
+      baseState.env = idx;
+    }
+  }
+
+  const [env, setEnv] = useState(baseState.env);
   const profile = profiles[env];
   const lang = profile.CodeLanguage;
-  const [code, setCode] = useState<string>("");
+  const [code, setCode] = useState<string>(baseState.code);
   const [bundle, setBundle] = useState<Uint8Array | undefined>(undefined);
 
   useEffect(() => {
-    bun.download(profiles[env].baseBundle).then(() => {
-      bun.readFile(profiles[env].CodePath).then((text) => {
+    bun.download(profile.baseBundle).then(
+      async () => {
+        const params = (new URL(document.location.toString())).searchParams;
+        let text = undefined;
+
+        //read sample file in the bundle or use param
+        if (params.has('code')) {
+          text = params.get('code') as string;
+        }
+        else {
+          text = await bun.readFile(profile.CodePath);
+        }
+
+        //set editor code and exec command for the code
+        let setBundled = false;
         if (text) {
           setCode(text);
+          //exec command for exec param
+          if (params.has('exec')) {
+            const idx = profile.actions.findIndex(val => val.label.toLowerCase() === params.get('exec')?.toLowerCase());
+            if (idx >= 0) {
+              const action = profile.actions[idx];
+              const _bundle = await bun.getBundle(action.command, {
+                path: action.CodeDestination,
+                text,
+              });
+              setBundle(_bundle);
+              setBundled = true;
+            }
+          }
         }
-      });
-      bun.getBundle().then((_bundle) => setBundle(_bundle));
-    });
-  }, [env]);
+        if (setBundled === false) {
+          const _bundle = await bun.getBundle();
+          setBundle(_bundle);
+        }
+      }
+    );
+  }, [profile, baseState.envBaseCode]);
 
   const execAction = async (id: number) => {
     const action = profile.actions[id];

@@ -2,9 +2,58 @@
     "$comment": "Configurations for jsdos bundle and their usage",
     "profiles": [
         {
+            "label": "MASM 6.11",
+            "description": "Microsoft Macro Assembler with MASM.exe 5.00 link.exe 3.60",
+            "baseBundle": "/bundles/MASM-v6.11.jsdos",
+            "CodeLanguage": "nasm",
+            "CodePath": "code/hello.asm",
+            "actions": [
+                {
+                    "label": "run",
+                    "zh-cn": "运行代码",
+                    "CodeDestination": "test/test.asm",
+                    "command": [
+                        "mount c ./",
+                        "mount d ./test/",
+                        "set PATH=C:\\masm;%PATH%",
+                        "d:",
+                        "masm test.asm;",
+                        "link test.obj;",
+                        "test.exe"
+                    ]
+                },
+                {
+                    "label": "debug",
+                    "zh-cn": "使用debug调试",
+                    "CodeDestination": "test/test.asm",
+                    "command": [
+                        "mount c ./",
+                        "mount d ./test/",
+                        "set PATH=C:\\masm;%PATH%",
+                        "d:",
+                        "masm test.asm;",
+                        "link test.obj;",
+                        "debug test.exe"
+                    ]
+                },
+                {
+                    "label": "list",
+                    "zh-cn": "生成lst文件",
+                    "CodeDestination": "test/test.asm",
+                    "command": [
+                        "mount c ./",
+                        "mount d ./test/",
+                        "set PATH=C:\\masm;%PATH%",
+                        "d:",
+                        "masm /la test.asm;"
+                    ]
+                }
+            ]
+        },
+        {
             "label": "MASM 5.00",
             "description": "Microsoft Macro Assembler with MASM.exe 5.00 link.exe 3.60",
-            "baseBundle": "/bundles/MASM.jsdos",
+            "baseBundle": "/bundles/MASM-v5.00.jsdos",
             "CodeLanguage": "nasm",
             "CodePath": "code/hello.asm",
             "actions": [

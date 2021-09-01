@@ -99,15 +99,20 @@ export default function DosPlayer(props: PlayerProps) {
                 document.addEventListener("keydown", preventDown, true);
             }
         }
+        onClick={
+            () => { setPopup(undefined) }
+        }
     >
         {popup && <Popover
             id="type stdout hover"
             open={true}
             anchorEl={rootRef.current}
         >
-            <Typography>The full Content</Typography>
             <CloseIcon onClick={() => { setPopup(undefined) }} style={{ float: "right" }} />
-            <textarea value={popup} readOnly={true}></textarea>
-        </Popover>}
-    </div>;
+            <Typography>The full Content</Typography>
+            <textarea className="popup-stdout" value={popup} readOnly={true} cols={80} rows={10}
+            ></textarea>
+        </Popover>
+        }
+    </div >;
 }

@@ -5,7 +5,6 @@ import "./App.css";
 import DosPlayer from "./dos-player";
 import {
   FormControl,
-  Grid,
   InputLabel,
   MenuItem,
   Select,
@@ -91,9 +90,6 @@ function App() {
     if (_bundle) setBundle(_bundle);
   };
 
-  //change the style according to screen size
-  const { height, width } = window.screen;
-
   const formControl = () => {
     return <div style={{ float: "left" }}>
       <FormControl>
@@ -133,42 +129,40 @@ function App() {
   }
 
   return (
-    <>
-      <Grid container spacing={3}>
-        <Grid item xs={12} className="Control">
-          {formControl()}
-          <div style={{ float: 'right' }}>
-            <ActionButtons
-              baseOptions={["clean"]}
-              options={profile.actions.map(val => val.label)}
-              onClick={idx => idx < 0 ? setCode("") : execAction(idx)}
-            ></ActionButtons>
-          </div>
-        </Grid>
-        <Grid item xs={height > width ? 12 : 6} className="Dosbox">
-          <div style={{ alignContent: "center" }}>
-            {bundle !== undefined ? <DosPlayer bundle={bundle} /> : <></>}
-          </div>
-        </Grid>
-        <Grid item xs={height > width ? 12 : 6} className="Editor">
-          <CodeEditor
-            autoFocus
-            value={code}
-            language={lang}
-            placeholder="Please enter your code."
-            onChange={(evn) => setCode(evn.target.value)}
-            minHeight={80}
-            padding={15}
-            style={{
-              fontSize: 12,
-              backgroundColor: "#f5f5f5",
-              fontFamily:
-                "ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace",
-            }}
-          />
-        </Grid>
-      </Grid>
-    </>
+    <div className="ground-Container">
+      <div className="ground-selectors">
+        {formControl()}
+      </div>
+
+      <div className="ground-buttons">
+        <ActionButtons
+          baseOptions={["clean"]}
+          options={profile.actions.map(val => val.label)}
+          onClick={idx => idx < 0 ? setCode("") : execAction(idx)}
+        ></ActionButtons>
+      </div>
+      <div className="ground-dosbox">
+        {bundle !== undefined ? <DosPlayer bundle={bundle} /> : <></>}
+      </div>
+
+      <div className="ground-editor">
+        <CodeEditor
+          autoFocus
+          value={code}
+          language={lang}
+          placeholder="Please enter your code."
+          onChange={(evn) => setCode(evn.target.value)}
+          minHeight={80}
+          padding={15}
+          style={{
+            fontSize: 12,
+            backgroundColor: "#f5f5f5",
+            fontFamily:
+              "ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace",
+          }}
+        />
+      </div>
+    </div>
   );
 }
 

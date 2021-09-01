@@ -45,7 +45,8 @@
                         "mount d ./test/",
                         "set PATH=C:\\masm;%PATH%",
                         "d:",
-                        "masm /la test.asm;"
+                        "masm /la test.asm;",
+                        "type test.lst"
                     ]
                 }
             ]
@@ -94,7 +95,8 @@
                         "mount d ./test/",
                         "set PATH=C:\\masm;%PATH%",
                         "d:",
-                        "masm /la test.asm;"
+                        "masm /la test.asm;",
+                        "type test.lst"
                     ]
                 }
             ]
@@ -143,7 +145,8 @@
                         "mount d ./test/",
                         "set PATH=C:\\tasm;%PATH%",
                         "d:",
-                        "tasm /la test.asm;"
+                        "tasm /la test.asm;",
+                        "type test.lst"
                     ]
                 }
             ]

@@ -3,6 +3,8 @@ import React, { useRef, useEffect, useState } from "react";
 import { CommandInterface, Emulators } from "emulators";
 import { EmulatorsUi } from "emulators-ui";
 import { Layers } from "emulators-ui/dist/types/dom/layers";
+import { Popover, Typography } from "@material-ui/core";
+import CloseIcon from '@material-ui/icons/Close';
 
 declare const emulators: Emulators;
 declare const emulatorsUi: EmulatorsUi;
@@ -16,6 +18,7 @@ let ci: CommandInterface | null = null;
 export default function DosPlayer(props: PlayerProps) {
     const rootRef = useRef<HTMLDivElement>(null);
     const [layers, setlayers] = useState<Layers | null>(null);
+    const [popup, setPopup] = useState<string | undefined>();
 
     useEffect(() => {
         if (rootRef === null || rootRef.current === null) {
@@ -34,7 +37,7 @@ export default function DosPlayer(props: PlayerProps) {
 
     useEffect(() => {
         if (layers !== null) {
-            const ciP=emulators.dosboxWorker(props.bundle)
+            const ciP = emulators.dosboxWorker(props.bundle)
             ciP.then(
                 _ci => {
                     ci = _ci;
@@ -42,7 +45,23 @@ export default function DosPlayer(props: PlayerProps) {
                     emulatorsUi.graphics.webGl(layers, ci);
                     emulatorsUi.controls.mouse(layers, ci);
                     emulatorsUi.sound.audioNode(ci);
-                    emulatorsUi.controls.options(layers, ["default"], () => {/**/ }, 54, 54 / 4, 0)
+                    emulatorsUi.controls.options(layers, ["default"], () => {/**/ }, 54, 54 / 4, 0);
+
+                    let rec: string | undefined = undefined;
+                    let timerId: NodeJS.Timeout | undefined = undefined;
+                    ci.events().onStdout(val => {
+                        timerId && clearTimeout(timerId);
+                        if (val.includes(">type")) {
+                            rec = "";
+                        }
+                        if (rec !== undefined) {
+                            timerId = setTimeout(() => {
+                                rec && rec.length > 50 && setPopup(rec);
+                                rec = undefined;
+                            }, 1000);
+                            rec += val;
+                        }
+                    })
                 }
             );
         }
@@ -50,6 +69,13 @@ export default function DosPlayer(props: PlayerProps) {
             if (ci) { ci.exit() }
         }
     }, [layers, props.bundle]);
+
+    const preventUp = function (event: any) {
+        event.preventDefault();
+    }
+    const preventDown = function (event: any) {
+        event.preventDefault();
+    }
 
     return <div ref={rootRef} tabIndex={0}
         onBlur={
@@ -60,6 +86,8 @@ export default function DosPlayer(props: PlayerProps) {
                     const pseudo = { sendKeyEvent: () => { } }
                     emulatorsUi.controls.keyboard(layers, pseudo as any as CommandInterface, {});
                 }
+                document.removeEventListener("keyup", preventUp, true);
+                document.removeEventListener("keydown", preventDown, true);
             }
         }
         onFocus={
@@ -67,8 +95,19 @@ export default function DosPlayer(props: PlayerProps) {
                 if (layers && ci) {
                     emulatorsUi.controls.keyboard(layers, ci, {});
                 }
+                document.addEventListener("keyup", preventUp, true);
+                document.addEventListener("keydown", preventDown, true);
             }
         }
     >
+        {popup && <Popover
+            id="type stdout hover"
+            open={true}
+            anchorEl={rootRef.current}
+        >
+            <Typography>The full Content</Typography>
+            <CloseIcon onClick={() => { setPopup(undefined) }} style={{ float: "right" }} />
+            <textarea value={popup} readOnly={true}></textarea>
+        </Popover>}
     </div>;
 }

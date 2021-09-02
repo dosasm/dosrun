@@ -5,12 +5,14 @@ import { EmulatorsUi } from "emulators-ui";
 import { Layers } from "emulators-ui/dist/types/dom/layers";
 import { Popover, Typography } from "@material-ui/core";
 import CloseIcon from '@material-ui/icons/Close';
+import { EmulatorFunction } from "emulators-ui/dist/types/js-dos";
 
 declare const emulators: Emulators;
 declare const emulatorsUi: EmulatorsUi;
 
 interface PlayerProps {
     bundle: Uint8Array;
+    dosboxFunction?: EmulatorFunction
 }
 
 let ci: CommandInterface | null = null;
@@ -37,7 +39,10 @@ export default function DosPlayer(props: PlayerProps) {
 
     useEffect(() => {
         if (layers !== null) {
-            const ciP = emulators.dosboxWorker(props.bundle)
+            const ciP = props.dosboxFunction === "dosboxDirect" ?
+                emulators.dosboxDirect(props.bundle) :
+                emulators.dosboxWorker(props.bundle)
+                ;
             ciP.then(
                 _ci => {
                     ci = _ci;
@@ -68,7 +73,7 @@ export default function DosPlayer(props: PlayerProps) {
         return () => {
             if (ci) { ci.exit() }
         }
-    }, [layers, props.bundle]);
+    }, [layers, props.bundle, props.dosboxFunction]);
 
     const preventUp = function (event: any) {
         event.preventDefault();

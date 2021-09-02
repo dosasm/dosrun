@@ -1,4 +1,10 @@
-# Getting Started with Create React App
+# Dosrun Playground
+
+Powered by [js-dos](https://js-dos.com), this is a simply react web app for developing in DOS environment
+
+Thanks to [caiiiycuk](https://github.com/caiiiycuk/) and the Community. see [doc](https://dosasm.github.io/docs/tutorial-playGround/playGround)
+
+---
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

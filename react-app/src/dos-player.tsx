@@ -47,6 +47,7 @@ export default function DosPlayer(props: PlayerProps) {
                 _ci => {
                     ci = _ci;
                     layers.hideLoadingLayer();
+                    console.log('module get😀', !!(ci as any).transport.module)
                     emulatorsUi.graphics.webGl(layers, ci);
                     emulatorsUi.controls.mouse(layers, ci);
                     emulatorsUi.sound.audioNode(ci);
@@ -103,9 +104,6 @@ export default function DosPlayer(props: PlayerProps) {
                 document.addEventListener("keyup", preventUp, true);
                 document.addEventListener("keydown", preventDown, true);
             }
-        }
-        onClick={
-            () => { setPopup(undefined) }
         }
     >
         {popup && <Popover

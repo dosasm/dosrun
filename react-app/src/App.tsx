@@ -79,15 +79,6 @@ function App() {
     );
   }, [profile, baseState.envBaseCode]);
 
-  const execAction = async (id: number) => {
-    const action = profile.actions[id];
-    const _bundle = await bun.getBundle(action.command, {
-      path: action.CodeDestination,
-      text: code,
-    });
-    if (_bundle) setBundle(_bundle);
-  };
-
   const formControl = () => {
     return <div style={{ float: "left" }}>
       <FormControl>
@@ -126,6 +117,32 @@ function App() {
     </div>
   }
 
+  const operations = [
+    {
+      name: "file-clean",
+      label: "clean",
+      "zh-CN": "清空编辑器",
+      action: () => { setCode("") }
+    },
+    ...profile.actions.map(
+      (val, idx) => {
+        return {
+          name: 'exec-' + val.label,
+          label: val.label,
+          "zh-CN": val["zh-cn"],
+          action: async () => {
+            const action = profile.actions[idx];
+            const _bundle = await bun.getBundle(action.command, {
+              path: action.CodeDestination,
+              text: code,
+            });
+            if (_bundle) setBundle(_bundle);
+          }
+        }
+      }
+    )
+  ]
+
   return (
     <>
       <div className="ground-Container">
@@ -135,9 +152,7 @@ function App() {
 
         <div className="ground-buttons">
           <ActionButtons
-            baseOptions={["clean"]}
-            options={profile.actions.map(val => val.label)}
-            onClick={idx => idx < 0 ? setCode("") : execAction(idx)}
+            options={operations}
           ></ActionButtons>
         </div>
 

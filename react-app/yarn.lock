@@ -3776,17 +3776,17 @@ copy-descriptor@^0.1.0:
   integrity sha1-Z29us8OZl8LuGsOpJP1hJHSPV40=
 
 core-js-compat@^3.14.0, core-js-compat@^3.16.0, core-js-compat@^3.6.2:
-  version "3.16.4"
-  resolved "https://registry.nlark.com/core-js-compat/download/core-js-compat-3.16.4.tgz#cf28abe0e45a43645b04b2c1a073efa03d0b3b26"
-  integrity sha1-zyir4ORaQ2RbBLLBoHPvoD0LOyY=
+  version "3.17.1"
+  resolved "https://registry.nlark.com/core-js-compat/download/core-js-compat-3.17.1.tgz#a0264ed6712affb3334c56f6a6159f20aedad56b"
+  integrity sha1-oCZO1nEq/7MzTFb2phWfIK7a1Ws=
   dependencies:
     browserslist "^4.16.8"
     semver "7.0.0"
 
 core-js-pure@^3.16.0:
-  version "3.16.4"
-  resolved "https://registry.nlark.com/core-js-pure/download/core-js-pure-3.16.4.tgz#8b23122628d88c560f209812b9b2d9ebbce5e29c"
-  integrity sha1-iyMSJijYjFYPIJgSubLZ67zl4pw=
+  version "3.17.1"
+  resolved "https://registry.nlark.com/core-js-pure/download/core-js-pure-3.17.1.tgz?cache=0&sync_timestamp=1630527500802&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fcore-js-pure%2Fdownload%2Fcore-js-pure-3.17.1.tgz#4f2faa60843409a4cb4070431dbaa8cc6e602c78"
+  integrity sha1-Ty+qYIQ0CaTLQHBDHbqozG5gLHg=
 
 core-js@^2.4.0:
   version "2.6.12"
@@ -3794,9 +3794,9 @@ core-js@^2.4.0:
   integrity sha1-2TM9+nsGXjR8xWgiGdb2kIWcwuw=
 
 core-js@^3.6.5:
-  version "3.16.4"
-  resolved "https://registry.nlark.com/core-js/download/core-js-3.16.4.tgz#0fb1029a554fc2688c0963d7c900e188188a78e0"
-  integrity sha1-D7ECmlVPwmiMCWPXyQDhiBiKeOA=
+  version "3.17.1"
+  resolved "https://registry.nlark.com/core-js/download/core-js-3.17.1.tgz#b39e086f413789cf2ca4680c4ecd1b36a50ba277"
+  integrity sha1-s54Ib0E3ic8spGgMTs0bNqULonc=
 
 core-util-is@~1.0.0:
   version "1.0.3"
@@ -4537,9 +4537,9 @@ ejs@^2.6.1:
   integrity sha1-SGYSh1c9zFPjZsehrlLDoSDuybo=
 
 electron-to-chromium@^1.3.564, electron-to-chromium@^1.3.811:
-  version "1.3.826"
-  resolved "https://registry.nlark.com/electron-to-chromium/download/electron-to-chromium-1.3.826.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2Felectron-to-chromium%2Fdownload%2Felectron-to-chromium-1.3.826.tgz#dbe356b1546b39d83bcd47e675a9c5f61dadaed2"
-  integrity sha1-2+NWsVRrOdg7zUfmdanF9h2trtI=
+  version "1.3.827"
+  resolved "https://registry.nlark.com/electron-to-chromium/download/electron-to-chromium-1.3.827.tgz#c725e8db8c5be18b472a919e5f57904512df0fc1"
+  integrity sha1-xyXo24xb4YtHKpGeX1eQRRLfD8E=
 
 elliptic@^6.5.3:
   version "6.5.4"
@@ -4589,10 +4589,10 @@ emulators-ui@^0.68.0:
   resolved "https://registry.nlark.com/emulators-ui/download/emulators-ui-0.68.0.tgz#145363978236a57a934bc2f4c0aea5583d2eab7b"
   integrity sha1-FFNjl4I2pXqTS8L0wK6lWD0uq3s=
 
-emulators@^0.67.0:
-  version "0.67.0"
-  resolved "https://registry.nlark.com/emulators/download/emulators-0.67.0.tgz#9daba2fd48cdb634d2c55b12c7116e61ffd2c6b6"
-  integrity sha1-naui/UjNtjTSxVsSxxFuYf/SxrY=
+emulators@^0.71.0:
+  version "0.71.0"
+  resolved "https://registry.nlark.com/emulators/download/emulators-0.71.0.tgz#4c66c8334c6c291366e11026eb378350b0bc1d68"
+  integrity sha1-TGbIM0xsKRNm4RAm6zeDULC8HWg=
 
 encodeurl@~1.0.2:
   version "1.0.2"
@@ -7716,7 +7716,7 @@ min-indent@^1.0.0:
 
 mini-css-extract-plugin@0.11.3:
   version "0.11.3"
-  resolved "https://registry.nlark.com/mini-css-extract-plugin/download/mini-css-extract-plugin-0.11.3.tgz#15b0910a7f32e62ffde4a7430cfefbd700724ea6"
+  resolved "https://registry.nlark.com/mini-css-extract-plugin/download/mini-css-extract-plugin-0.11.3.tgz?cache=0&sync_timestamp=1630516348758&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fmini-css-extract-plugin%2Fdownload%2Fmini-css-extract-plugin-0.11.3.tgz#15b0910a7f32e62ffde4a7430cfefbd700724ea6"
   integrity sha1-FbCRCn8y5i/95KdDDP771wByTqY=
   dependencies:
     loader-utils "^1.1.0"
@@ -9584,7 +9584,7 @@ react-dom@^17.0.2:
 
 react-error-overlay@^6.0.9:
   version "6.0.9"
-  resolved "https://registry.nlark.com/react-error-overlay/download/react-error-overlay-6.0.9.tgz#3c743010c9359608c375ecd6bc76f35d93995b0a"
+  resolved "https://registry.nlark.com/react-error-overlay/download/react-error-overlay-6.0.9.tgz?cache=0&sync_timestamp=1630519274561&other_urls=https%3A%2F%2Fregistry.nlark.com%2Freact-error-overlay%2Fdownload%2Freact-error-overlay-6.0.9.tgz#3c743010c9359608c375ecd6bc76f35d93995b0a"
   integrity sha1-PHQwEMk1lgjDdezWvHbzXZOZWwo=
 
 react-is@^16.7.0, react-is@^16.8.1:

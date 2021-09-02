@@ -51,17 +51,16 @@
 }
 .ground-editor {
   grid-area: editor;
+  overflow: auto;
+  height: 80vh;
 }
 
 .popup-stdout {
   font-family: monospace;
   overflow: visible;
-  overflow-y: visible;
-  overflow-x: visible;
 }
 
-@media screen and (max-width: 960px) {
-  /* 手机端CSS代码 */
+@media only screen and (orientation: portrait) {
   .ground-Container {
     display: grid;
     grid-template-areas:
@@ -71,21 +70,7 @@
   }
 }
 
-footer {
-  text-align: center;
-  /* position: absolute;
-  bottom: 0; */
-  width: 100%;
-}
-
-@media screen and (max-width: 500px) {
-  #mode-selector {
-    display: none;
-    visibility: collapse;
-  }
-}
-
-@media screen and (min-width: 960px) {
+@media only screen and (orientation: landscape) {
   .ground-Container {
     display: grid;
     grid-template-areas:
@@ -95,4 +80,9 @@ footer {
     grid-gap: 1%;
     padding: 10px;
   }
+}
+
+footer {
+  text-align: center;
+  width: 100%;
 }

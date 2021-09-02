@@ -152,6 +152,26 @@
             ]
         },
         {
+            "label": "batch",
+            "description": "use a empty jsdos bundle, we can run batch file",
+            "baseBundle": "/bundles/empty.jsdos",
+            "CodeLanguage": "bat",
+            "baseCode":"echo hello jsdos",
+            "actions": [
+                {
+                    "label": "run",
+                    "zh-cn": "运行BAT",
+                    "CodeDestination": "test/test.bat",
+                    "command": [
+                        "mount c ./",
+                        "mount d ./test/",
+                        "d:",
+                        "test.bat"
+                    ]
+                }
+            ]
+        },
+        {
             "label": "Turbo C 2.0(T)",
             "description": "Turbo C 2.0 Compile code in Text Mode. From Gabriel Ortiz(gabrielortizamador@gmail.com)",
             "baseBundle": "/bundles/TurboC.jsdos",

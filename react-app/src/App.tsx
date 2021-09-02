@@ -49,8 +49,11 @@ function App() {
         if (params.has('code')) {
           text = params.get('code') as string;
         }
-        else {
+        else if (profile.CodePath) {
           text = await bun.readFile(profile.CodePath);
+        }
+        else if (profile.baseCode) {
+          text = profile.baseCode;
         }
 
         //set editor code and exec command for the code
@@ -181,7 +184,7 @@ function App() {
       <footer>
         <Typography>
           {new Date().getFullYear()}
-          <a href="https://github.com/dosasm/dosrun/tree/main/react-app"><GitHubIcon></GitHubIcon></a>
+          <a href="https://github.com/dosasm/dosrun/tree/main/react-app"><GitHubIcon htmlColor='black'></GitHubIcon></a>
           <a href="https://dosasm.github.io/docs/tutorial-playGround/playGround">dosrun</a>
         </Typography>
       </footer>

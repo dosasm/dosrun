@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/dosrun/static/css/main.800b48ba.chunk.css",
-    "main.js": "/dosrun/static/js/main.7b37bea4.chunk.js",
-    "main.js.map": "/dosrun/static/js/main.7b37bea4.chunk.js.map",
+    "main.css": "/dosrun/static/css/main.e985044b.chunk.css",
+    "main.js": "/dosrun/static/js/main.9961297f.chunk.js",
+    "main.js.map": "/dosrun/static/js/main.9961297f.chunk.js.map",
     "runtime-main.js": "/dosrun/static/js/runtime-main.b948ef13.js",
     "runtime-main.js.map": "/dosrun/static/js/runtime-main.b948ef13.js.map",
     "static/css/2.189ab08d.chunk.css": "/dosrun/static/css/2.189ab08d.chunk.css",
@@ -12,14 +12,14 @@
     "static/js/3.7d59aa6d.chunk.js.map": "/dosrun/static/js/3.7d59aa6d.chunk.js.map",
     "index.html": "/dosrun/index.html",
     "static/css/2.189ab08d.chunk.css.map": "/dosrun/static/css/2.189ab08d.chunk.css.map",
-    "static/css/main.800b48ba.chunk.css.map": "/dosrun/static/css/main.800b48ba.chunk.css.map",
+    "static/css/main.e985044b.chunk.css.map": "/dosrun/static/css/main.e985044b.chunk.css.map",
     "static/js/2.9019389b.chunk.js.LICENSE.txt": "/dosrun/static/js/2.9019389b.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.b948ef13.js",
     "static/css/2.189ab08d.chunk.css",
     "static/js/2.9019389b.chunk.js",
-    "static/css/main.800b48ba.chunk.css",
-    "static/js/main.7b37bea4.chunk.js"
+    "static/css/main.e985044b.chunk.css",
+    "static/js/main.9961297f.chunk.js"
   ]
 }

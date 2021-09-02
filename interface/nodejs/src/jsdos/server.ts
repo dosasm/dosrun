@@ -21,7 +21,7 @@ export function startServer(jsdosCi: JsdosCi, emuUiDist: string, serverPort?: nu
     });
 
     httpServer.listen(port, () => {
-        console.log(`jsdos showing at http://localhost:${port}`);
+        process.stdout.write(`jsdos showing at http://localhost:${port}`);
     });
 
     io.on("connection", (socket: Socket) => {

@@ -87,8 +87,15 @@ export class Jsdos implements DosEmu {
 
         //read jsdos bundle and get Command Interface of jsdos
         const bundle = fs.readFileSync(bundlePath);
+        if (!opt.disableStdout) { console.log = () => undefined }
+
         const ci = await this.emulators.dosboxDirect(bundle);
-        const jsdosCi = new JsdosCi(ci, opt);
+        const jsdosCi = new JsdosCi(ci);
+
+        //redirect stdin and stdout
+        const stdin = opt.disableStdin ? undefined : process.stdin;
+        const stdout = opt.disableStdout ? undefined : process.stdout;
+        jsdosCi.bindToStream(stdin, stdout);
 
         //TODO: implement a file watcher to write changes for local file system to the jsdos bundle
         //Need help: why no module I can get 

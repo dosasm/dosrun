@@ -82,8 +82,8 @@ function App() {
     );
   }, [profile, baseState.envBaseCode]);
 
-  const formControl = () => {
-    return <div style={{ float: "left" }}>
+  const selectors =
+    <div style={{ float: "left" }}>
       <FormControl>
         <InputLabel id="select-jsdos-bundle-label">
           environment
@@ -118,14 +118,42 @@ function App() {
         </Select>
       </FormControl>
     </div>
-  }
+
 
   const operations = [
     {
-      name: "file-clean",
+      name: "editor-clean",
       label: "clean",
       "zh-CN": "清空编辑器",
       action: () => { setCode("") }
+    },
+    // {
+    //   name: "editor-upload",
+    //   label: "upload",
+    //   "zh-CN": "上传文件",
+    //   action: () => { setCode("") }
+    // },
+    {
+      name: "editor-download",
+      label: "download",
+      "zh-CN": "作为文件下载",
+      action: () => {
+        //https://blog.csdn.net/zhang__ao/article/details/82625606
+        function download(filename: string, text: string) {
+          var element = document.createElement('a');
+          element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+          element.setAttribute('download', filename);
+
+          element.style.display = 'none';
+          document.body.appendChild(element);
+
+          element.click();
+
+          document.body.removeChild(element);
+        }
+        let filename = new Date().toLocaleString() + "." + profile.codeExt;
+        download(filename, code);
+      }
     },
     ...profile.actions.map(
       (val, idx) => {
@@ -150,7 +178,7 @@ function App() {
     <>
       <div className="ground-Container">
         <div className="ground-selectors">
-          {formControl()}
+          {selectors}
         </div>
 
         <div className="ground-buttons">

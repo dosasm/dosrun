@@ -5,6 +5,7 @@
             "label": "MASM 6.11",
             "description": "Microsoft Macro Assembler with MASM.exe 5.00 link.exe 3.60",
             "baseBundle": "/bundles/MASM-v6.11.jsdos",
+            "codeExt":"asm",
             "CodeLanguage": "nasm",
             "CodePath": "code/hello.asm",
             "actions": [
@@ -55,6 +56,7 @@
             "label": "MASM 5.00",
             "description": "Microsoft Macro Assembler with MASM.exe 5.00 link.exe 3.60",
             "baseBundle": "/bundles/MASM-v5.00.jsdos",
+            "codeExt":"asm",
             "CodeLanguage": "nasm",
             "CodePath": "code/hello.asm",
             "actions": [
@@ -105,6 +107,7 @@
             "label": "TASM 4.1",
             "description": "Borland's Turbo Assembler with tasm.exe 4.1 tlink.exe 7.1.30.1",
             "baseBundle": "/bundles/TASM.jsdos",
+            "codeExt":"asm",
             "CodeLanguage": "nasm",
             "CodePath": "code/hello.asm",
             "actions": [
@@ -155,6 +158,7 @@
             "label": "batch",
             "description": "use a empty jsdos bundle, we can run batch file",
             "baseBundle": "/bundles/empty.jsdos",
+            "codeExt":"bat",
             "CodeLanguage": "bat",
             "baseCode":"echo hello jsdos",
             "actions": [
@@ -177,6 +181,7 @@
             "baseBundle": "/bundles/TurboC.jsdos",
             "CodeLanguage": "C",
             "CodePath": "Code/Text.c",
+            "codeExt":"c",
             "actions": [
                 {
                     "label": "run",
@@ -200,6 +205,7 @@
             "baseBundle": "/bundles/TurboC.jsdos",
             "CodeLanguage": "C",
             "CodePath": "Code/Graphic.c",
+            "codeExt":"c",
             "actions": [
                 {
                     "label": "run",

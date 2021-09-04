@@ -213,7 +213,7 @@ function App() {
         <Typography>
           {new Date().getFullYear()}
           <a href="https://github.com/dosasm/dosrun/tree/main/react-app"><GitHubIcon htmlColor='black'></GitHubIcon></a>
-          <a href="https://dosasm.github.io/docs/tutorial-playGround/playGround">dosrun</a>
+          <a href="https://dosasm.github.io/docs/tutorial-playGround/playGround">docs</a>
         </Typography>
       </footer>
     </>
